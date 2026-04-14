@@ -4,505 +4,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sumanth D. — 世界を創る者</title>
+<title>sumanth.D© — 世界を創る者</title>
+<meta name="description" content="Sumanth Amidyala — 3D environment designer, hard-surface modeller, builder of worlds.">
 
 <!-- Joy Boy was here. -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<!-- Preload critical assets so the loader stays in control -->
 
-<style>
-:root{
-  --c-black:#0c0e11;
-  --c-ink:#101214;
-  --c-grey:#e6dfe4;
-  --c-grey-dark:#544d56;
-  --c-purple:#a399a8;
-  --c-berry:#c8c2cf;
-  --c-red:#ff4f36;
-  --c-yellow:#f4ff1e;
-  --c-blue:#3687ff;
-  --c-white:#fff;
+<link rel="preload" as="image" href="assets/bg-hero.png">
+<link rel="preload" as="image" href="assets/bg-clouds.png">
+<link rel="preload" as="image" href="assets/bg-hilltop.png">
+<link rel="preload" as="image" href="assets/bg-dawn.png">
+<link rel="preload" as="image" href="assets/sensei-mugen.png">
+<link rel="preload" as="image" href="assets/jumper-silhouette.png">
+<link rel="preload" as="image" href="assets/texture-paper.jpg">
 
-  --f-cubic:cubic-bezier(.35,.35,0,1);
-  --f-cubic-in:cubic-bezier(.69,0,0,1);
-  --f-bounce:cubic-bezier(.6,.5,0,3);
-
-  --frame-pad:10px;
-  --frame-radius:14px;
-  --mono:'JetBrains Mono',monospace;
-  --display:'Inter Tight',-apple-system,BlinkMacSystemFont,sans-serif;
-  --serif:'Cormorant Garamond',serif;
-}
-
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:auto;}
-html,body{
-  background:#000;
-  color:var(--c-grey);
-  font-family:var(--display);
-  font-weight:400;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  cursor:none;
-  overflow-x:hidden;
-}
-body{min-height:100vh;}
-::selection{background:var(--c-red);color:var(--c-white);}
-
-.scroll-spacer{ width:100%; height:800vh; pointer-events:none; }
-
-/* ── STAGE: floating frame ── */
-.stage{
-  position:fixed;
-  inset:var(--frame-pad);
-  z-index:10;
-  border-radius:var(--frame-radius);
-  overflow:hidden;
-  background:var(--c-ink);
-  box-shadow:
-    0 30px 80px -20px rgba(0,0,0,.85),
-    0 0 0 1px rgba(255,255,255,.02) inset,
-    0 1px 0 rgba(255,255,255,.04) inset;
-  transition:background .9s var(--f-cubic);
-}
-.stage.-light{background:var(--c-grey);}
-
-canvas.layer{ position:absolute; inset:0; width:100%; height:100%; display:block; }
-#bg{z-index:1;}
-#three{z-index:2;}
-#fx{z-index:3; pointer-events:none;}
-#fg{z-index:4; pointer-events:none;}
-
-/* ── HEADER CHROME ── */
-.chrome{
-  position:absolute;
-  top:18px; left:22px; right:22px;
-  z-index:30;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  pointer-events:none;
-  font-family:var(--mono);
-  font-size:11px;
-  color:var(--c-grey);
-}
-.chrome > *{pointer-events:auto;}
-
-.brand{ display:flex; align-items:center; gap:12px; }
-.brand-icon{
-  width:30px; height:30px;
-  border-radius:7px;
-  background:var(--c-red);
-  display:grid; place-items:center;
-  box-shadow:0 4px 12px -2px rgba(255,79,54,.4), inset 0 1px 0 rgba(255,255,255,.18);
-}
-.brand-icon svg{width:18px; height:18px;}
-.brand-mark{
-  font-family:var(--display);
-  font-weight:500;
-  font-size:14px;
-  letter-spacing:-.01em;
-  color:var(--c-grey);
-}
-.brand-mark sup{font-size:9px; vertical-align:super; opacity:.55; margin-left:2px;}
-
-.nav{
-  display:flex; align-items:center; gap:10px;
-  position:absolute; left:50%; transform:translateX(-50%);
-}
-.pill{
-  height:30px; min-width:30px; padding:0 14px;
-  border-radius:30px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.07);
-  display:grid; place-items:center;
-  font-family:var(--mono);
-  font-size:11px;
-  color:var(--c-grey);
-  letter-spacing:.04em;
-  backdrop-filter:blur(8px) saturate(160%);
-  -webkit-backdrop-filter:blur(8px) saturate(160%);
-  transition:all .35s var(--f-cubic);
-}
-.pill.-num{font-size:10px; opacity:.5; padding:0; width:30px;}
-.pill.-active{background:rgba(255,255,255,.10); color:var(--c-white);}
-.stage.-light .pill{background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.08); color:var(--c-ink);}
-
-.scroll-pct{
-  font-family:var(--mono);
-  font-size:11px;
-  color:var(--c-grey);
-  opacity:.55;
-  font-variant-numeric:tabular-nums;
-  letter-spacing:.04em;
-}
-.stage.-light .brand-mark,
-.stage.-light .scroll-pct,
-.stage.-light .stats{color:var(--c-ink);}
-
-/* ── DEV STATS EDGE ── */
-.stats{
-  position:absolute;
-  left:18px; top:50%;
-  transform:translateY(-50%) rotate(-90deg);
-  transform-origin:left center;
-  z-index:25;
-  font-family:var(--mono);
-  font-size:9px;
-  letter-spacing:.18em;
-  color:var(--c-grey);
-  opacity:.4;
-  white-space:nowrap;
-  pointer-events:none;
-  display:flex; gap:18px;
-}
-
-/* ── GHOST WORDMARK (beat 1) ── */
-.ghost-wordmark{
-  position:absolute;
-  bottom:60px; left:0; right:0;
-  z-index:5;
-  text-align:center;
-  pointer-events:none;
-  font-family:var(--display);
-  font-weight:800;
-  font-size:clamp(80px,16vw,220px);
-  letter-spacing:-.04em;
-  line-height:.85;
-  color:rgba(230,223,228,.07);
-  white-space:nowrap;
-  opacity:0;
-  transform:translateY(20px);
-  transition:opacity 1.2s var(--f-cubic), transform 1.2s var(--f-cubic);
-  will-change:opacity, transform;
-}
-.ghost-wordmark.-on{opacity:1; transform:translateY(0);}
-.ghost-wordmark .d{color:rgba(255,79,54,.18);}
-.ghost-wordmark .dot{display:inline-block; width:.16em; height:.16em; border-radius:50%; background:rgba(255,79,54,.32); transform:translateY(-.65em); margin:0 .04em;}
-
-/* ── KANJI WATERMARK ── */
-.kanji-mark{
-  position:absolute; inset:0; z-index:6;
-  display:grid; place-items:center;
-  pointer-events:none; opacity:0;
-  transition:opacity 1.4s var(--f-cubic);
-}
-.kanji-mark.-on{opacity:1;}
-.kanji-mark span{
-  font-family:var(--serif);
-  font-size:clamp(180px,30vw,360px);
-  font-weight:400;
-  color:rgba(255,79,54,.04);
-  letter-spacing:.05em;
-}
-
-/* ── BEAT CAPTIONS ── */
-.caption{
-  position:absolute; z-index:20;
-  font-family:var(--mono);
-  font-size:10px; letter-spacing:.18em;
-  color:var(--c-purple);
-  text-transform:uppercase;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .8s var(--f-cubic);
-}
-.caption.-on{opacity:.8;}
-.caption.cap-1{top:50%; right:6vw; transform:translateY(-50%) rotate(90deg); transform-origin:right center;}
-.caption.cap-2{bottom:7vh; left:50%; transform:translateX(-50%);}
-.caption.cap-3{top:8vh; right:8vw;}
-
-/* ── BEAT TITLES ── */
-.beat-title{
-  position:absolute; z-index:8;
-  pointer-events:none;
-  font-family:var(--display);
-  color:var(--c-grey);
-  opacity:0;
-  transform:translateY(30px);
-  transition:opacity 1s var(--f-cubic), transform 1.2s var(--f-cubic);
-  will-change:opacity, transform;
-}
-.beat-title.-on{opacity:1; transform:translateY(0);}
-.beat-title.bt-2{
-  top:38%; left:50%;
-  transform:translate(-50%, -50%) translateY(30px);
-  font-weight:300;
-  font-size:clamp(36px,6vw,84px);
-  letter-spacing:-.025em;
-  text-align:center;
-  line-height:.95;
-  filter:blur(8px);
-  width:90%;
-  transition:opacity 1.2s var(--f-cubic), transform 1.2s var(--f-cubic), filter 1.2s var(--f-cubic);
-}
-.beat-title.bt-2.-on{transform:translate(-50%,-50%) translateY(0); filter:blur(0px);}
-.beat-title.bt-2 em{font-style:normal; color:var(--c-red); font-weight:500;}
-.beat-title.bt-3{
-  top:18vh; left:50%;
-  transform:translate(-50%, 0) translateY(30px);
-  font-weight:200;
-  font-size:clamp(28px,4.5vw,64px);
-  letter-spacing:-.02em;
-  text-align:center;
-  width:90%;
-  font-family:var(--serif);
-  font-style:italic;
-  line-height:1.15;
-}
-.beat-title.bt-3.-on{transform:translate(-50%,0) translateY(0);}
-.beat-title.bt-3 .accent{color:var(--c-red); font-style:normal; font-family:var(--display); font-weight:500;}
-.beat-title.bt-3 .quiet{opacity:.4;}
-
-/* ── NARRATOR ── */
-.narrator{
-  position:absolute;
-  bottom:24px; right:24px;
-  z-index:35;
-  display:flex;
-  align-items:flex-end;
-  gap:14px;
-  pointer-events:none;
-  opacity:0;
-  transform:translateY(20px);
-  transition:opacity .6s var(--f-cubic), transform .6s var(--f-cubic);
-}
-.narrator.-on{opacity:1; transform:translateY(0); pointer-events:auto;}
-
-.bubble{
-  max-width:340px;
-  padding:14px 16px 12px 16px;
-  border-radius:14px;
-  background:rgba(167,167,180,.09);
-  backdrop-filter:blur(8px) saturate(200%);
-  -webkit-backdrop-filter:blur(8px) saturate(200%);
-  border:1px solid rgba(255,255,255,.06);
-  position:relative;
-  font-family:var(--display);
-  font-size:13px;
-  line-height:1.45;
-  color:var(--c-grey);
-  letter-spacing:-.005em;
-  box-shadow:
-    inset 0 0 .8rem .2rem rgba(0,0,0,.3),
-    0 12px 30px -10px rgba(0,0,0,.5);
-}
-.bubble::after{
-  content:'';
-  position:absolute; inset:0;
-  border-radius:14px;
-  pointer-events:none;
-  background:linear-gradient(-45deg, rgba(255,255,255,.18), transparent 40%, transparent 60%, rgba(255,255,255,.18));
-  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite:xor;
-          mask-composite:exclude;
-  padding:1px;
-}
-
-.bubble .who{
-  display:flex; align-items:center; gap:8px;
-  margin-bottom:6px;
-  font-family:var(--mono);
-  font-size:9px; letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--c-purple);
-  opacity:.7;
-}
-.bubble .who::before{
-  content:'';
-  width:5px; height:5px;
-  border-radius:50%;
-  background:var(--c-red);
-  box-shadow:0 0 8px rgba(255,79,54,.7);
-  animation:bp 1.4s ease-in-out infinite;
-}
-@keyframes bp{0%,100%{opacity:.6;} 50%{opacity:1;}}
-
-.bubble .text{
-  font-weight:400;
-  position:relative;
-  min-height:1.45em;
-}
-.bubble .text em{font-style:italic; color:var(--c-red); opacity:.95;}
-.bubble .text strong{font-weight:600; color:var(--c-white);}
-
-.character{
-  width:54px; height:64px;
-  position:relative;
-  flex-shrink:0;
-}
-.character canvas{
-  width:100%; height:100%;
-  image-rendering:pixelated;
-  image-rendering:crisp-edges;
-}
-.character .name{
-  position:absolute;
-  top:100%; left:50%;
-  transform:translateX(-50%);
-  font-family:var(--mono);
-  font-size:8px; letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--c-purple);
-  margin-top:4px;
-  white-space:nowrap;
-  opacity:.7;
-}
-
-/* ── SCROLL HINT ── */
-.scroll-hint{
-  position:absolute;
-  bottom:30px; left:50%;
-  transform:translateX(-50%);
-  z-index:32;
-  pointer-events:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  font-family:var(--mono);
-  font-size:9px; letter-spacing:.3em;
-  text-transform:uppercase;
-  color:var(--c-purple);
-  opacity:0;
-  transition:opacity 1s var(--f-cubic);
-}
-.scroll-hint.-on{opacity:.7;}
-.scroll-hint::after{
-  content:'';
-  width:1px; height:36px;
-  background:linear-gradient(to bottom, var(--c-purple), transparent);
-  animation:sh 1.6s ease-in-out infinite;
-  transform-origin:top;
-}
-@keyframes sh{0%,100%{transform:scaleY(.3); opacity:.4;} 50%{transform:scaleY(1); opacity:1;}}
-
-.progress-line{
-  position:absolute;
-  top:0; left:0; height:2px;
-  background:var(--c-red);
-  z-index:40; width:0%;
-  transition:width .15s linear;
-  box-shadow:0 0 8px rgba(255,79,54,.6);
-}
-
-/* ── CURSOR ── */
-.cursor{
-  position:fixed;
-  z-index:1000;
-  width:18px; height:18px;
-  border:1px solid rgba(255,255,255,.55);
-  border-radius:50%;
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  transition:width .15s var(--f-cubic), height .15s var(--f-cubic), background .15s, border-color .15s;
-  mix-blend-mode:difference;
-}
-.cursor.-pointer{width:8px; height:8px; background:var(--c-white);}
-
-/* ── LOADER ── */
-.loader{
-  position:fixed; inset:0;
-  z-index:9999;
-  background:#06080a;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  gap:18px;
-  transition:opacity 1.4s var(--f-cubic);
-}
-.loader.-out{opacity:0; pointer-events:none;}
-.loader-mark{
-  font-family:var(--serif);
-  font-style:italic;
-  font-size:clamp(48px,8vw,84px);
-  font-weight:400;
-  color:var(--c-grey);
-  letter-spacing:-.02em;
-  display:flex; align-items:baseline; gap:4px;
-}
-.loader-mark .d{color:var(--c-red);}
-.loader-mark .dot{
-  display:inline-block;
-  width:8px; height:8px;
-  border-radius:50%;
-  background:var(--c-red);
-  margin-bottom:8px;
-  animation:lp 1.2s ease-in-out infinite;
-}
-@keyframes lp{0%,100%{opacity:.3; transform:scale(.8);} 50%{opacity:1; transform:scale(1.1);}}
-.loader-bar{
-  width:200px; height:1px;
-  background:rgba(255,255,255,.06);
-  position:relative; overflow:hidden;
-}
-.loader-bar i{
-  position:absolute; top:0; left:0; height:100%;
-  background:var(--c-red); width:0%;
-  transition:width .25s var(--f-cubic);
-  box-shadow:0 0 12px rgba(255,79,54,.7);
-}
-.loader-text{
-  font-family:var(--mono);
-  font-size:9px; letter-spacing:.4em;
-  text-transform:uppercase;
-  color:var(--c-purple);
-  opacity:.6;
-}
-.loader-meta, .loader-meta-r{
-  position:absolute;
-  bottom:24px;
-  font-family:var(--mono);
-  font-size:9px; letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--c-grey-dark);
-  opacity:.5;
-}
-.loader-meta{left:24px;}
-.loader-meta-r{right:24px;}
-</style>
-
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- LOADER -->
+<!-- ═══════════ LOADER ═══════════ -->
 
 <div class="loader" id="loader">
-  <div class="loader-mark">Sumanth<span class="d">D</span><span class="dot"></span></div>
-  <div class="loader-bar"><i id="loader-bar"></i></div>
-  <div class="loader-text" id="loader-text">Forging · 鍛造</div>
-  <div class="loader-meta">∞ ALL BLUE / TRANSMISSION : 01</div>
-  <div class="loader-meta-r" id="loader-pct">000 %</div>
+  <div class="loader-inner">
+    <div class="loader-mark">
+      <span>su</span>
+      <span class="m-glyph" id="load-m">m</span>
+      <span class="d-glyph">.D</span>
+      <span class="c-mark">©</span>
+    </div>
+    <div class="loader-bar"><i id="loader-bar"></i></div>
+    <div class="loader-text" id="loader-text">Forging · 鍛造</div>
+    <div class="loader-meta-l">∞ ALL BLUE / TRANSMISSION : 01</div>
+    <div class="loader-meta-r" id="loader-pct">000 %</div>
+  </div>
 </div>
 
-<!-- STAGE -->
+<!-- ═══════════ STAGE ═══════════ -->
 
 <div class="stage" id="stage">
-  <canvas class="layer" id="bg"></canvas>
-  <canvas class="layer" id="three"></canvas>
-  <canvas class="layer" id="fx"></canvas>
-  <canvas class="layer" id="fg"></canvas>
 
-  <div class="progress-line" id="progress"></div>
+  <!-- Background image layers (GPU-accelerated via CSS transform) -->
+
+  <div class="bg-scene" id="bg-scene">
+    <img class="bg-img bg-1" id="bg-hero"    src="assets/bg-hero.png"    alt="" decoding="async">
+    <img class="bg-img bg-2" id="bg-clouds"  src="assets/bg-clouds.png"  alt="" decoding="async">
+    <img class="bg-img bg-3" id="bg-impact"  alt="" aria-hidden="true">
+    <img class="bg-img bg-4" id="bg-paper"   src="assets/texture-paper.jpg" alt="" decoding="async">
+    <img class="bg-img bg-5" id="bg-hilltop" src="assets/bg-hilltop.png" alt="" decoding="async">
+    <img class="bg-img bg-6" id="bg-dawn"    src="assets/bg-dawn.png"    alt="" decoding="async">
+  </div>
+
+  <!-- Three.js (katana only) -->
+
+<canvas class="layer layer-three" id="three"></canvas>
+
+  <!-- Single atmosphere canvas — god rays, petals, embers, lightning, dandelions -->
+
+<canvas class="layer layer-atmos" id="atmos"></canvas>
+
+  <!-- Shatter overlay (beat 6) -->
+
+  <div class="shatter-layer" id="shatter" aria-hidden="true"></div>
+
+  <!-- Progress thread -->
+
+  <div class="progress-line" id="progress" aria-hidden="true"></div>
+
+  <!-- Chromatic / grain / scanlines / vignette -->
+
+  <div class="overlay-chromatic" aria-hidden="true"></div>
+  <div class="overlay-grain" aria-hidden="true"></div>
+  <div class="overlay-scanlines" aria-hidden="true"></div>
+  <div class="overlay-vignette" aria-hidden="true"></div>
+
+  <!-- ═══════════ CHROME ═══════════ -->
 
   <header class="chrome">
-    <div class="brand">
+    <div class="brand" data-cursor="hover">
       <div class="brand-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21l6-6"/>
-          <path d="M9 15l9-9 3 3-9 9-3-3z"/>
-          <path d="M14 7l3 3"/>
+          <path d="M3 21l6-6"/><path d="M9 15l9-9 3 3-9 9-3-3z"/><path d="M14 7l3 3"/>
         </svg>
       </div>
-      <div class="brand-mark">Sumanth<span style="color:var(--c-red); margin-left:2px;">D.</span><sup>©</sup></div>
+      <div class="brand-mark">
+        <span>su</span><span class="brand-m" id="brand-m">m</span><span class="brand-d">.D</span><sup>©</sup>
+      </div>
     </div>
 
 ```
-<nav class="nav">
-  <span class="pill -num">1</span>
-  <span class="pill -active" id="pill-codex">Codex</span>
+<nav class="chapters" id="chapters" data-cursor="hover">
+  <div class="chapter-pill -num" id="ch-num">1</div>
+  <div class="chapter-pill -active" id="ch-main">
+    <span class="ch-label" id="ch-label">Codex</span>
+    <div class="ch-expand" id="ch-expand">
+      <div class="ch-item" data-jump="0.08">II · Sacred Tree</div>
+      <div class="ch-item" data-jump="0.38">III · Ascent</div>
+      <div class="ch-item" data-jump="0.72">IV · Skill Hub</div>
+      <div class="ch-item" data-jump="0.85">V · Moonlit Hill</div>
+      <div class="ch-item" data-jump="0.96">VI · Dawn</div>
+    </div>
+  </div>
 </nav>
 
 <div class="scroll-pct" id="scroll-pct">0%</div>
@@ -516,743 +118,103 @@ canvas.layer{ position:absolute; inset:0; width:100%; height:100%; display:block
     <span>RUNWAY : <span id="stat-run">0</span> %</span>
   </div>
 
-  <div class="ghost-wordmark" id="ghost-1">Sumanth<span class="d">D</span><span class="dot"></span></div>
-  <div class="kanji-mark" id="kanji-1"><span>創</span></div>
+  <!-- ═══════════ BEAT 1 — VOID (huge monogram center) ═══════════ -->
 
-  <div class="beat-title bt-2" id="bt-2">A blade is just steel,<br>until <em>someone</em> chooses to lift it.</div>
-
-  <div class="beat-title bt-3" id="bt-3">
-    <span class="quiet">"And so —"</span><br>
-    <span class="accent">the world I wanted</span><br>
-    <span class="quiet">was the one I had to build."</span>
+  <div class="hero-monogram" id="hero-monogram">
+    <span>su</span><span class="hm-m" id="hm-m">m</span><span class="hm-d">.D</span>
+    <span class="hm-copy">©</span>
   </div>
 
-  <div class="caption cap-1" id="cap-1">CHAPTER 一 · INHERITANCE</div>
-  <div class="caption cap-2" id="cap-2">— FROM HYDERABAD, A CRAFTSMAN —</div>
-  <div class="caption cap-3" id="cap-3">VOL. 4.6 / FOLIO 001</div>
+  <!-- ═══════════ CAPTIONS ═══════════ -->
+
+  <div class="caption cap-chapter" id="cap-chapter">CHAPTER 一 · INHERITANCE</div>
+  <div class="caption cap-bottom"  id="cap-bottom">— FROM HYDERABAD, A CRAFTSMAN —</div>
+  <div class="caption cap-folio"   id="cap-folio">VOL. 4.6 / FOLIO 001</div>
+
+  <!-- ═══════════ BEAT TITLES (glitch-scramble) ═══════════ -->
+
+  <div class="beat-title bt-sacred"  id="bt-sacred"
+       data-target="A blade is just steel,|until &lt;em&gt;someone&lt;/em&gt; chooses to lift it."></div>
+
+  <div class="beat-title bt-dialogue" id="bt-dialogue"
+       data-target="&lt;span class='quiet'&gt;&#8220;And so —&#8221;&lt;/span&gt;|&lt;span class='accent'&gt;the world I wanted&lt;/span&gt;|&lt;span class='quiet'&gt;was the one I had to build.&#8221;&lt;/span&gt;"></div>
+
+  <div class="beat-title bt-ascent"  id="bt-ascent"
+       data-target="Between &lt;em&gt;clouds&lt;/em&gt; and &lt;em&gt;thunder&lt;/em&gt;,|a blade remembers its weight."></div>
+
+  <div class="beat-title bt-self"    id="bt-self"
+       data-target="&#8220;To master the craft is to master &lt;em&gt;the self&lt;/em&gt;.&#8221;"></div>
+
+  <!-- ═══════════ BEAT 7 — SKILL HUB (editorial ledger) ═══════════ -->
+
+  <section class="skillhub" id="skillhub" aria-hidden="true">
+    <div class="skillhub-left">
+      <div class="sh-kicker">WORKS &middot; 作品</div>
+      <h2 class="sh-title">The worlds<br>I have begun<br><em>to build.</em></h2>
+      <p class="sh-sub">Environment design, hard-surface modelling, and the objects that inhabit imagined spaces. Seven pieces across three continents — 2023 to the present.</p>
+      <div class="sh-footnote">Scroll to traverse · 続く</div>
+    </div>
+    <div class="skillhub-right" id="skillhub-right"></div>
+  </section>
+
+  <!-- ═══════════ BEAT 9 — DAWN + JUMPER ═══════════ -->
+
+  <div class="dawn-title" id="dawn-title">
+    <div class="dt-kicker">報い · The Dawn</div>
+    <div class="dt-main">is a <em>question</em>.</div>
+    <div class="dt-main">The sword is the <span class="red">answer</span>.</div>
+  </div>
+
+  <button class="jumper" id="jumper" aria-label="Awaken">
+    <img src="assets/jumper-silhouette.png" alt="" decoding="async">
+    <span class="jumper-hint">Click to awaken · 覚醒</span>
+  </button>
 
   <div class="scroll-hint" id="scroll-hint">Scroll · 続く</div>
 
-  <div class="narrator" id="narrator">
-    <div class="bubble" id="bubble">
-      <div class="who" id="who">SENSEI MUGEN</div>
-      <div class="text" id="text">…</div>
+  <!-- ═══════════ MUGEN (narrator portrait + bubble) ═══════════ -->
+
+  <div class="mugen" id="mugen">
+    <div class="mugen-bubble" id="mugen-bubble">
+      <div class="mb-who" id="mb-who">SENSEI MUGEN</div>
+      <div class="mb-text" id="mb-text">…</div>
     </div>
-    <div class="character">
-      <canvas id="sprite" width="32" height="40"></canvas>
-      <div class="name" id="char-name">MUGEN</div>
+    <div class="mugen-portrait">
+      <img src="assets/sensei-mugen.png" alt="Sensei Mugen" decoding="async">
+      <span class="mp-name">MUGEN · 夢幻</span>
     </div>
   </div>
+
+  <!-- ═══════════ META WIDGET ═══════════ -->
+
+  <aside class="meta-widget" id="meta-widget">
+    <div class="mw-row"><span class="mw-k">HOUR</span><span class="mw-v" id="mw-hour">Nightfall</span></div>
+    <div class="mw-row"><span class="mw-k">COORD</span><span class="mw-v">17°N · 78°E</span></div>
+    <div class="mw-row"><span class="mw-k">WIND</span><span class="mw-v" id="mw-wind">NE · LOW</span></div>
+  </aside>
+
+  <!-- ═══════════ INK MODE (Luffy click) ═══════════ -->
+
+<canvas class="ink-layer" id="ink-layer" aria-hidden="true"></canvas>
+
+  <div class="ink-title" id="ink-title">
+    <div class="it-kanji">覚醒</div>
+    <div class="it-en">AWAKENING</div>
+    <div class="it-sub">Every ocean has a shore.<br>Every shore has a sky.<br><em>Keep going.</em></div>
+  </div>
+
 </div>
 
 <div class="scroll-spacer"></div>
-<div class="cursor" id="cursor"></div>
+<div class="cursor" id="cursor"><div class="cursor-dot"></div></div>
+
+<!-- three.js + gltf -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
-<script>
-/* ═══════════════════════════════════════════════════════════════
-   SUMANTH D. — FIRST 3 SCROLL BEATS
-═══════════════════════════════════════════════════════════════ */
-const $ = id => document.getElementById(id);
-
-const S = {
-  scrollY:0, smooth:0, progress:0,
-  vw:innerWidth, vh:innerHeight,
-  mx:innerWidth/2, my:innerHeight/2, nx:0, ny:0,
-  t:0, lt:0, dt:0,
-  fps:60, fpsT:0, fpsC:0,
-  modelReady:false,
-  dialogueIdx:-1,
-};
-
-const DIALOGUE = [
-  { at:0.04, who:'SENSEI MUGEN',
-    text:'<em>Hmm.</em> So you finally crossed the line. Sit down, traveler — the road is long, and the blade is older than your grandfather.' },
-  { at:0.13, who:'SENSEI MUGEN',
-    text:'I am <strong>Mugen</strong>, ✦ keeper of unfinished worlds. This katana you see has cut the dreams of seventeen apprentices. Each one returned home a craftsman.' },
-  { at:0.24, who:'SENSEI MUGEN',
-    text:'But none — <em>none</em> — became a builder of worlds. Few inherit the will. Fewer still answer it.' },
-  { at:0.36, who:'SENSEI MUGEN',
-    text:'Tell me, then. <strong>What world do you intend to build?</strong>' },
-  { at:0.50, who:'SUMANTH D.',
-    text:'<em>The one I cannot find on any map.</em>' },
-];
-
-/* ─── SCROLL ─── */
-let scrollMax = 1;
-function updateScrollMax(){
-  scrollMax = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-}
-window.addEventListener('scroll', ()=>{ S.scrollY = window.scrollY; }, {passive:true});
-window.addEventListener('resize', ()=>{
-  S.vw = innerWidth; S.vh = innerHeight;
-  updateScrollMax();
-  R.setSize(S.vw, S.vh);
-  CAM.aspect = S.vw/S.vh;
-  CAM.updateProjectionMatrix();
-  resizeCanvases();
-});
-
-/* ─── CANVASES ─── */
-const bg = $('bg'), fx = $('fx'), fg = $('fg');
-const bgx = bg.getContext('2d'), fxx = fx.getContext('2d'), fgx = fg.getContext('2d');
-function resizeCanvases(){
-  [bg,fx,fg].forEach(c=>{
-    const dpr = Math.min(devicePixelRatio,2);
-    c.width = innerWidth*dpr; c.height = innerHeight*dpr;
-    c.getContext('2d').setTransform(dpr,0,0,dpr,0,0);
-  });
-}
-resizeCanvases();
-
-/* ─── THREE.JS ─── */
-const R = new THREE.WebGLRenderer({
-  canvas:$('three'), antialias:true, alpha:true, powerPreference:'high-performance'
-});
-R.setPixelRatio(Math.min(devicePixelRatio,2));
-R.setSize(S.vw, S.vh);
-R.toneMapping = THREE.ACESFilmicToneMapping;
-R.toneMappingExposure = 1.0;
-R.setClearColor(0x000000, 0);
-
-const SC = new THREE.Scene();
-SC.fog = new THREE.FogExp2(0x06080a, 0.022);
-
-const CAM = new THREE.PerspectiveCamera(38, S.vw/S.vh, 0.01, 200);
-CAM.position.set(0,0,5);
-
-SC.add(new THREE.AmbientLight(0x1a1820, 0.7));
-const keyL = new THREE.DirectionalLight(0xffeedd, 1.6);
-keyL.position.set(-3, 5, 4); SC.add(keyL);
-const fillL = new THREE.DirectionalLight(0x402030, 0.55);
-fillL.position.set(4, -1, 2); SC.add(fillL);
-const rimL = new THREE.DirectionalLight(0xff6644, 0.7);
-rimL.position.set(0, -3, -4); SC.add(rimL);
-const edgeAccent = new THREE.PointLight(0xff4f36, 0, 6);
-edgeAccent.position.set(0, 0, 0.4); SC.add(edgeAccent);
-
-const KAT = new THREE.Group();
-SC.add(KAT);
-
-const loader = new THREE.GLTFLoader();
-loader.load('models/katana.glb',
-  gltf => {
-    const m = gltf.scene;
-    const box = new THREE.Box3().setFromObject(m);
-    const sz = box.getSize(new THREE.Vector3());
-    const sc = 5.4 / Math.max(sz.x, sz.y, sz.z, .001);
-    m.scale.setScalar(sc);
-    const c = box.getCenter(new THREE.Vector3());
-    m.position.set(-c.x*sc, -c.y*sc, -c.z*sc);
-    const meshes = [];
-    m.traverse(o=>{
-      if(!o.isMesh) return;
-      const ms = Array.isArray(o.material) ? o.material : [o.material];
-      o.material = Array.isArray(o.material) ? ms.map(enhMat) : enhMat(ms[0]);
-      meshes.push(o);
-    });
-    KAT.add(m);
-    KAT.userData.model = m;
-    KAT.userData.meshes = meshes;
-    S.modelReady = true;
-  },
-  xhr => {
-    if(xhr.total > 0){
-      const p = xhr.loaded/xhr.total;
-      $('loader-bar').style.width = (40 + p*50) + '%';
-      $('loader-pct').textContent = String(Math.round(40 + p*50)).padStart(3,'0') + ' %';
-    }
-  },
-  err => {
-    console.warn('katana.glb not found — using stand-in');
-    const blade = new THREE.Mesh(
-      new THREE.BoxGeometry(2.6, .085, .020),
-      new THREE.MeshStandardMaterial({color:0x080910, metalness:.96, roughness:.06})
-    );
-    const handle = new THREE.Mesh(
-      new THREE.CylinderGeometry(.055, .055, .82, 18),
-      new THREE.MeshStandardMaterial({color:0x1a0510, metalness:.4, roughness:.55})
-    );
-    handle.rotation.z = Math.PI/2; handle.position.x = -1.7;
-    const tsuba = new THREE.Mesh(
-      new THREE.CylinderGeometry(.16, .16, .035, 28),
-      new THREE.MeshStandardMaterial({color:0x4a2e1a, metalness:.7, roughness:.3})
-    );
-    tsuba.rotation.z = Math.PI/2; tsuba.position.x = -1.25;
-    const g = new THREE.Group();
-    g.add(blade, handle, tsuba);
-    KAT.add(g);
-    KAT.userData.model = g;
-    KAT.userData.meshes = [blade, handle, tsuba];
-    S.modelReady = true;
-  }
-);
-function enhMat(m){
-  const mat = m.clone();
-  if(!mat.emissive) mat.emissive = new THREE.Color(0,0,0);
-  const col = mat.color || new THREE.Color(1,1,1);
-  const b = (col.r+col.g+col.b)/3;
-  if(b < 0.18){ mat.metalness = 0.95; mat.roughness = 0.08; }
-  else if(b < 0.5){ mat.metalness = 0.7; mat.roughness = 0.25; }
-  mat.envMapIntensity = 1.8;
-  return mat;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PROCEDURAL CHERRY-BLOSSOM TREE BACKDROP
-═══════════════════════════════════════════════════════════════ */
-let treeCanvas = null;
-function buildTree(){
-  treeCanvas = document.createElement('canvas');
-  treeCanvas.width = 1100; treeCanvas.height = 1500;
-  const c = treeCanvas.getContext('2d');
-  c.fillStyle = '#000';
-  c.fillRect(0, 0, 1100, 1500);
-
-  // background scattered red dots (out-of-focus blossoms)
-  for(let i=0; i<160; i++){
-    const x = Math.random()*1100, y = Math.random()*1500;
-    const r = 2 + Math.random()*4;
-    c.fillStyle = `rgba(255, ${30+Math.random()*40}, ${30+Math.random()*30}, ${.18+Math.random()*.25})`;
-    c.beginPath(); c.arc(x, y, r, 0, Math.PI*2); c.fill();
-  }
-
-  function branch(x, y, len, ang, w, depth){
-    if(depth <= 0 || len < 4) return;
-    const ex = x + Math.cos(ang)*len;
-    const ey = y + Math.sin(ang)*len;
-    const g = c.createLinearGradient(x, y, ex, ey);
-    g.addColorStop(0, `rgba(238, 222, 196, ${.85 - depth*.04})`);
-    g.addColorStop(.5, `rgba(218, 198, 168, ${.78 - depth*.04})`);
-    g.addColorStop(1, `rgba(195, 172, 138, ${.7 - depth*.04})`);
-    c.strokeStyle = g;
-    c.lineWidth = w;
-    c.lineCap = 'round';
-    c.beginPath();
-    const cx = x + Math.cos(ang+.2)*len*.5;
-    const cy = y + Math.sin(ang+.2)*len*.5;
-    c.moveTo(x, y);
-    c.quadraticCurveTo(cx, cy, ex, ey);
-    c.stroke();
-
-    c.strokeStyle = `rgba(60, 28, 12, ${.5 - depth*.02})`;
-    c.lineWidth = Math.max(.5, w*.18);
-    c.stroke();
-
-    const branches = depth > 4 ? 2 : (Math.random() > .35 ? 3 : 2);
-    for(let i=0; i<branches; i++){
-      const turn = (i - (branches-1)/2) * (.35 + Math.random()*.5);
-      const newAng = ang + turn + (Math.random()-.5)*.3;
-      const newLen = len * (.62 + Math.random()*.18);
-      const newW = w * .68;
-      branch(ex, ey, newLen, newAng, newW, depth-1);
-    }
-
-    // blossoms at terminals
-    if(depth <= 2){
-      const blossomCount = 3 + Math.floor(Math.random()*5);
-      for(let i=0; i<blossomCount; i++){
-        const bx = ex + (Math.random()-.5)*40;
-        const by = ey + (Math.random()-.5)*40;
-        const br = 4 + Math.random()*7;
-        for(let j=0; j<5; j++){
-          const a = j/5 * Math.PI*2;
-          const dx = bx + Math.cos(a)*br*.6;
-          const dy = by + Math.sin(a)*br*.6;
-          c.fillStyle = `rgba(${200+Math.random()*55}, ${30+Math.random()*30}, ${20+Math.random()*25}, ${.85+Math.random()*.15})`;
-          c.beginPath(); c.arc(dx, dy, br*.45, 0, Math.PI*2); c.fill();
-        }
-        c.fillStyle = 'rgba(80, 10, 5, .8)';
-        c.beginPath(); c.arc(bx, by, br*.2, 0, Math.PI*2); c.fill();
-      }
-    }
-
-    if(depth <= 3 && Math.random() > .3){
-      for(let i=0; i<3; i++){
-        const lx = ex + (Math.random()-.5)*30;
-        const ly = ey + (Math.random()-.5)*30;
-        c.fillStyle = `rgba(${85+Math.random()*40}, ${50+Math.random()*30}, ${20+Math.random()*15}, .5)`;
-        c.beginPath();
-        c.ellipse(lx, ly, 4 + Math.random()*3, 8 + Math.random()*4, Math.random()*Math.PI, 0, Math.PI*2);
-        c.fill();
-      }
-    }
-  }
-
-  branch(550, 1480, 280, -Math.PI/2 + .1, 38, 7);
-  branch(550, 1480, 240, -Math.PI/2 - .2, 32, 6);
-  branch(950, 1500, 180, -Math.PI/2 - .15, 22, 5);
-  branch(180, 1490, 160, -Math.PI/2 + .25, 20, 5);
-
-  for(let i=0; i<60; i++){
-    const x = Math.random()*1100;
-    const y = 1420 + Math.random()*80;
-    const h = 30 + Math.random()*50;
-    c.strokeStyle = `rgba(${100+Math.random()*40}, ${60+Math.random()*30}, ${25+Math.random()*15}, ${.4+Math.random()*.3})`;
-    c.lineWidth = 1.2;
-    c.beginPath();
-    c.moveTo(x, y);
-    c.quadraticCurveTo(x + (Math.random()-.5)*15, y - h*.5, x + (Math.random()-.5)*8, y - h);
-    c.stroke();
-  }
-
-  // paper grain
-  const id = c.getImageData(0, 0, 1100, 1500);
-  const d = id.data;
-  for(let i=0; i<d.length; i+=4){
-    const n = (Math.random()-.5)*22;
-    d[i]   = Math.max(0, Math.min(255, d[i]+n));
-    d[i+1] = Math.max(0, Math.min(255, d[i+1]+n));
-    d[i+2] = Math.max(0, Math.min(255, d[i+2]+n));
-  }
-  c.putImageData(id, 0, 0);
-}
-buildTree();
-
-function drawBg(){
-  const W = innerWidth, H = innerHeight;
-  bgx.clearRect(0,0,W,H);
-
-  const g = bgx.createRadialGradient(W*.5, H*.35, 0, W*.5, H*.5, Math.max(W,H));
-  g.addColorStop(0, '#15101a');
-  g.addColorStop(.4, '#0a0810');
-  g.addColorStop(1, '#040306');
-  bgx.fillStyle = g; bgx.fillRect(0,0,W,H);
-
-  const hg = bgx.createLinearGradient(0, H*.55, 0, H);
-  hg.addColorStop(0, 'rgba(255,79,54,0)');
-  hg.addColorStop(1, 'rgba(120,20,15,.35)');
-  bgx.fillStyle = hg; bgx.fillRect(0,0,W,H);
-
-  const treeOpacity = smoothstep(0.06, 0.22, S.progress) * (1 - smoothstep(0.55, 0.75, S.progress));
-  if(treeOpacity > 0.01 && treeCanvas){
-    const tw = treeCanvas.width, th = treeCanvas.height;
-    const scale = Math.max(W/tw, H/th) * 1.05;
-    const dw = tw*scale, dh = th*scale;
-    const dx = (W-dw)*.5;
-    const dy = H - dh + 20 + S.smooth*0.05;
-    bgx.globalAlpha = treeOpacity * 0.9;
-    bgx.drawImage(treeCanvas, dx, dy, dw, dh);
-    bgx.globalAlpha = 1;
-  }
-
-  bgx.save();
-  bgx.globalCompositeOperation = 'screen';
-  for(let i=0; i<4; i++){
-    const fy = H*.62 + i*40 - S.smooth*0.02;
-    const fop = .04 - i*.008;
-    const fg = bgx.createLinearGradient(0, fy-100, 0, fy+100);
-    fg.addColorStop(0, 'rgba(120,80,160,0)');
-    fg.addColorStop(.5, `rgba(80,40,100,${fop})`);
-    fg.addColorStop(1, 'rgba(0,0,0,0)');
-    bgx.fillStyle = fg; bgx.fillRect(0, fy-100, W, 200);
-  }
-  bgx.restore();
-
-  if(treeOpacity < 0.4){
-    const starOp = (1 - treeOpacity) * 0.5;
-    bgx.fillStyle = `rgba(220,210,230,${starOp})`;
-    for(let i=0; i<60; i++){
-      const sx2 = ((i*173.7)%W);
-      const sy2 = ((i*97.3)%(H*.6));
-      const r = .5 + (i%3)*.4;
-      bgx.beginPath(); bgx.arc(sx2, sy2, r, 0, Math.PI*2); bgx.fill();
-    }
-  }
-
-  const vg = bgx.createRadialGradient(W*.5, H*.5, Math.min(W,H)*.3, W*.5, H*.5, Math.max(W,H)*.7);
-  vg.addColorStop(0, 'rgba(0,0,0,0)');
-  vg.addColorStop(1, 'rgba(0,0,0,.55)');
-  bgx.fillStyle = vg; bgx.fillRect(0,0,W,H);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PETALS + EMBERS
-═══════════════════════════════════════════════════════════════ */
-const petals = [];
-function spawnPetal(){
-  const isClose = Math.random() < 0.08;
-  return {
-    x: Math.random()*innerWidth + 200,
-    y: -30 - Math.random()*80,
-    sz: isClose ? 22+Math.random()*16 : 3+Math.random()*5,
-    rot: Math.random()*Math.PI*2,
-    rv: (Math.random()-.5)*.018,
-    vx: -.3 - Math.random()*.7 - (isClose?.4:0),
-    vy: .15 + Math.random()*.4 + (isClose?.3:0),
-    sw: Math.random()*Math.PI*2,
-    ss: .005 + Math.random()*.012,
-    sa: .3 + Math.random()*1.0,
-    op: isClose ? .35+Math.random()*.25 : .35+Math.random()*.5,
-    glass: isClose,
-    hue: Math.random() > .5 ? 'pink' : 'red',
-  };
-}
-for(let i=0; i<80; i++){
-  const p = spawnPetal(); p.y = Math.random()*innerHeight;
-  petals.push(p);
-}
-
-const embers = [];
-for(let i=0; i<24; i++){
-  embers.push({
-    x: Math.random()*innerWidth, y: Math.random()*innerHeight,
-    r: .8 + Math.random()*1.6,
-    vx: (Math.random()-.5)*.25, vy: -(0.12 + Math.random()*.4),
-    fl: Math.random()*Math.PI*2, fs: .03 + Math.random()*.06,
-    op: .25 + Math.random()*.4,
-  });
-}
-
-function drawPetalShape(sz, stroke=false){
-  for(let i=0; i<5; i++){
-    fxx.save();
-    fxx.rotate(i * Math.PI*2/5);
-    fxx.beginPath();
-    fxx.ellipse(0, -sz*.5, sz*.26, sz*.52, 0, 0, Math.PI*2);
-    if(stroke) fxx.stroke(); else fxx.fill();
-    fxx.restore();
-  }
-}
-
-function drawFx(){
-  const W = innerWidth, H = innerHeight;
-  fxx.clearRect(0, 0, W, H);
-  const wind = Math.sin(S.t*.4) * 1.1;
-
-  petals.forEach(p => {
-    p.sw += p.ss;
-    p.x += p.vx + Math.sin(p.sw)*p.sa + wind;
-    p.y += p.vy;
-    p.rot += p.rv;
-    if(p.y > H+40 || p.x < -60){ Object.assign(p, spawnPetal()); p.y = -30; }
-
-    fxx.save();
-    fxx.translate(p.x, p.y);
-    fxx.rotate(p.rot);
-    fxx.globalAlpha = p.op;
-
-    if(p.glass){
-      fxx.filter = 'blur(.6px)';
-      const g = fxx.createRadialGradient(0, 0, 0, 0, 0, p.sz);
-      g.addColorStop(0, 'rgba(255,200,210,.4)');
-      g.addColorStop(.6, 'rgba(255,160,180,.2)');
-      g.addColorStop(1, 'rgba(220,120,150,0)');
-      fxx.fillStyle = g;
-      drawPetalShape(p.sz);
-      fxx.filter = 'none';
-
-      fxx.strokeStyle = 'rgba(255,210,220,.6)';
-      fxx.lineWidth = .7;
-      drawPetalShape(p.sz, true);
-
-      const sg = fxx.createRadialGradient(-p.sz*.2, -p.sz*.3, 0, -p.sz*.2, -p.sz*.3, p.sz*.4);
-      sg.addColorStop(0, 'rgba(255,255,255,.55)');
-      sg.addColorStop(1, 'rgba(255,255,255,0)');
-      fxx.fillStyle = sg;
-      fxx.beginPath(); fxx.arc(-p.sz*.2, -p.sz*.3, p.sz*.4, 0, Math.PI*2); fxx.fill();
-    } else {
-      fxx.fillStyle = p.hue === 'pink' ? 'rgba(255,170,190,1)' : 'rgba(255,90,80,1)';
-      drawPetalShape(p.sz);
-    }
-    fxx.restore();
-  });
-
-  embers.forEach(e => {
-    e.x += e.vx; e.y += e.vy; e.fl += e.fs;
-    if(e.y < -10) e.y = H+10;
-    if(e.x < -8) e.x = W+8;
-    if(e.x > W+8) e.x = -8;
-    const op = e.op * (0.5 + 0.5*Math.sin(e.fl));
-    const g = fxx.createRadialGradient(e.x, e.y, 0, e.x, e.y, e.r*4);
-    g.addColorStop(0, `rgba(255,140,80,${op})`);
-    g.addColorStop(.4, `rgba(220,80,40,${op*.4})`);
-    g.addColorStop(1, 'rgba(120,20,10,0)');
-    fxx.fillStyle = g;
-    fxx.beginPath(); fxx.arc(e.x, e.y, e.r*4, 0, Math.PI*2); fxx.fill();
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PIXEL SPRITE — Sensei Mugen, hooded
-═══════════════════════════════════════════════════════════════ */
-const spriteCv = $('sprite');
-const sx = spriteCv.getContext('2d');
-let spriteFrame = 0;
-
-const SPRITE_FRAMES = [
-  [
-    "0000011111100000",
-    "0001155555510000",
-    "0011555555551000",
-    "0115555555555100",
-    "0115554444555100",
-    "0115544444445100",
-    "0115544114451000",
-    "0011544444510000",
-    "0001144666110000",
-    "0011226666221100",
-    "0122222222222210",
-    "1222222222222221",
-    "1233322222233321",
-    "1233322222233321",
-    "1233322222233321",
-    "1223322222233221",
-    "0122322222232210",
-    "0012332222332100",
-    "0001233333321000",
-    "0000122222210000",
-  ],
-  [
-    "0000011111100000",
-    "0001155555510000",
-    "0011555555551000",
-    "0115555555555100",
-    "0115554444555100",
-    "0115544444445100",
-    "0115544114451000",
-    "0011544444510000",
-    "0001144666110000",
-    "0011226666221100",
-    "0122222222222210",
-    "1222222222222221",
-    "1233322222233321",
-    "1233322222233321",
-    "1233322222233321",
-    "1232222222232221",
-    "0122322222232210",
-    "0012332222332100",
-    "0001233333321000",
-    "0000122222210000",
-  ],
-];
-
-const PALETTE = {
-  '1':'#0c0a0d', '2':'#1f1a24', '3':'#322a3a',
-  '4':'#d8c8a8', '5':'#f0e8e0', '6':'#ff4f36',
-};
-
-function drawSprite(){
-  const f = SPRITE_FRAMES[Math.floor(spriteFrame) % SPRITE_FRAMES.length];
-  sx.clearRect(0, 0, 32, 40);
-  for(let y=0; y<f.length; y++){
-    for(let x=0; x<f[y].length; x++){
-      const v = f[y][x];
-      if(v === '0') continue;
-      sx.fillStyle = PALETTE[v];
-      sx.fillRect(x*2, y*2, 2, 2);
-    }
-  }
-}
-drawSprite();
-setInterval(()=>{ spriteFrame += 1; drawSprite(); }, 500);
-
-/* ═══════════════════════════════════════════════════════════════
-   DIALOGUE — typewriter
-═══════════════════════════════════════════════════════════════ */
-let typingJob = null;
-function showDialogue(idx){
-  if(idx === S.dialogueIdx) return;
-  S.dialogueIdx = idx;
-  const d = DIALOGUE[idx];
-  if(!d) return;
-
-  if(!$('narrator').classList.contains('-on')){
-    $('narrator').classList.add('-on');
-  }
-
-  $('who').textContent = d.who;
-  $('char-name').textContent = d.who.split(' ').slice(-1)[0];
-
-  if(typingJob) clearInterval(typingJob);
-  const target = d.text;
-  let i = 0;
-  $('text').innerHTML = '';
-  typingJob = setInterval(()=>{
-    i++;
-    let preview = target.slice(0, i);
-    const open = [...preview.matchAll(/<(\w+)[^>]*>/g)].map(m=>m[1]);
-    const close = [...preview.matchAll(/<\/(\w+)>/g)].map(m=>m[1]);
-    const unclosed = open.filter(t=>{
-      const oi = open.indexOf(t);
-      const ci = close.indexOf(t);
-      return oi !== -1 && (ci === -1 || ci < oi);
-    });
-    let display = preview;
-    unclosed.forEach(t => display += `</${t}>`);
-    $('text').innerHTML = display;
-    if(i >= target.length){ clearInterval(typingJob); typingJob = null; }
-  }, 22);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   SCROLL → SCENE
-═══════════════════════════════════════════════════════════════ */
-function smoothstep(a, b, x){
-  const t = Math.max(0, Math.min(1, (x-a)/(b-a)));
-  return t*t*(3 - 2*t);
-}
-function lerp(a, b, t){ return a + (b-a)*t; }
-function toggleClass(el, cls, on){
-  if(!el) return;
-  if(on) el.classList.add(cls); else el.classList.remove(cls);
-}
-
-function updateBeats(){
-  const p = S.progress;
-
-  if(KAT.userData.model){
-    // Camera-of-blade composition over scroll:
-    // 0.00–0.06: huge close, slightly tilted (we see hilt area)
-    // 0.06–0.22: rotates toward horizontal, settles, pulls back to "portrait of the blade"
-    // 0.22–0.50: holds + slow drift, edge-glow grows
-    // 0.50–0.85: tilts up, exits frame to right (transition tease)
-
-    const kz = lerp(0.5, 5.5, smoothstep(0.0, 0.18, p))
-             + lerp(0, 1.5, smoothstep(0.20, 0.50, p))
-             - lerp(0, 1.0, smoothstep(0.55, 0.80, p));
-    const kx = lerp(0.4, 0, smoothstep(0.0, 0.18, p))
-             + lerp(0, 0.6, smoothstep(0.55, 0.85, p));
-    const ky = lerp(-0.1, 0.05, smoothstep(0.0, 0.22, p))
-             + lerp(0, 0.5, smoothstep(0.55, 0.85, p));
-
-    KAT.position.set(
-      kx + S.nx * 0.04,
-      ky + S.ny * 0.04,
-      kz
-    );
-
-    const rZ = lerp(
-      lerp(-Math.PI*.45, 0, smoothstep(0.0, 0.20, p)),
-      Math.PI*.35,
-      smoothstep(0.55, 0.85, p)
-    );
-    const rY = lerp(0.3, 0, smoothstep(0.0, 0.20, p));
-    const rX = S.ny * 0.06 + Math.sin(S.t*.3)*.008;
-    KAT.rotation.set(rX, rY, rZ);
-
-    edgeAccent.intensity = smoothstep(0.10, 0.45, p) * 1.4;
-    edgeAccent.position.set(KAT.position.x, KAT.position.y, KAT.position.z + 0.4);
-
-    if(KAT.userData.meshes){
-      const eW = smoothstep(0.30, 0.65, p) * 0.4;
-      KAT.userData.meshes.forEach(m=>{
-        if(m.material?.emissive){
-          const col = m.material.color;
-          const b = (col.r+col.g+col.b)/3;
-          if(b < 0.18){
-            m.material.emissive.setRGB(eW*0.3, eW*0.05, eW*0.0);
-          }
-        }
-      });
-    }
-  }
-
-  toggleClass($('ghost-1'), '-on', p < 0.06);
-  toggleClass($('kanji-1'), '-on', p < 0.10);
-
-  toggleClass($('cap-1'), '-on', p < 0.18);
-  toggleClass($('cap-2'), '-on', p > 0.05 && p < 0.20);
-  toggleClass($('cap-3'), '-on', p > 0.20);
-
-  toggleClass($('bt-2'), '-on', p > 0.10 && p < 0.30);
-  toggleClass($('bt-3'), '-on', p > 0.42 && p < 0.62);
-
-  toggleClass($('scroll-hint'), '-on', p < 0.04);
-
-  for(let i = 0; i < DIALOGUE.length; i++){
-    if(p >= DIALOGUE[i].at && i > S.dialogueIdx){
-      showDialogue(i);
-      break;
-    }
-  }
-  if(p < DIALOGUE[0].at){
-    $('narrator').classList.remove('-on');
-    S.dialogueIdx = -1;
-  }
-
-  $('scroll-pct').textContent = Math.round(p*100) + '%';
-  $('progress').style.width = (p*100) + '%';
-  $('stat-top').textContent = Math.round(S.smooth);
-  $('stat-run').textContent = Math.round(p*100);
-
-  $('pill-codex').textContent = p > 0.5 ? 'Skill Hub' : 'Codex';
-}
-
-/* ─── CURSOR ─── */
-const cursor = $('cursor');
-addEventListener('mousemove', e => {
-  S.mx = e.clientX; S.my = e.clientY;
-  S.nx = (e.clientX/innerWidth)*2 - 1;
-  S.ny = -((e.clientY/innerHeight)*2 - 1);
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
-});
-addEventListener('mousedown', () => cursor.classList.add('-pointer'));
-addEventListener('mouseup',   () => cursor.classList.remove('-pointer'));
-
-/* ─── MAIN LOOP ─── */
-function loop(ts){
-  requestAnimationFrame(loop);
-  S.dt = Math.min((ts - S.lt)*.001, 0.05);
-  S.lt = ts;
-  S.t += S.dt;
-
-  S.fpsC++; S.fpsT += S.dt;
-  if(S.fpsT >= 1){
-    S.fps = Math.round(S.fpsC/S.fpsT);
-    $('stat-fps').textContent = S.fps;
-    S.fpsT = 0; S.fpsC = 0;
-  }
-
-  S.smooth += (S.scrollY - S.smooth) * 0.08;
-  S.progress = S.smooth / scrollMax;
-
-  updateBeats();
-  drawBg();
-  drawFx();
-  R.render(SC, CAM);
-}
-
-/* ─── LOADER ─── */
-const ldText = $('loader-text');
-const ldBar = $('loader-bar');
-const ldPct = $('loader-pct');
-const ldStages = ['Forging · 鍛造', 'Tempering · 焼入', 'Polishing · 研磨', 'Awakening · 覚醒'];
-let ldP = 0, ldStage = 0;
-const ldI = setInterval(()=>{
-  ldP += 1.5 + Math.random()*4;
-  if(ldP > 38) ldP = 38;
-  ldBar.style.width = ldP + '%';
-  ldPct.textContent = String(Math.round(ldP)).padStart(3,'0') + ' %';
-  if(ldP > 12 && ldStage === 0){ ldStage = 1; ldText.textContent = ldStages[1]; }
-  if(ldP > 24 && ldStage === 1){ ldStage = 2; ldText.textContent = ldStages[2]; }
-  if(ldP >= 38) clearInterval(ldI);
-}, 110);
-
-function boot(){
-  ldBar.style.width = '100%';
-  ldPct.textContent = '100 %';
-  ldText.textContent = ldStages[3];
-  setTimeout(()=>{
-    $('loader').classList.add('-out');
-    S.lt = performance.now();
-    updateScrollMax();
-    requestAnimationFrame(loop);
-  }, 700);
-}
-
-const bootPoll = setInterval(()=>{
-  if(S.modelReady){ clearInterval(bootPoll); boot(); }
-}, 100);
-setTimeout(()=>{ if(!S.modelReady){ S.modelReady = true; } }, 8000);
-
-updateScrollMax();
-window.scrollTo(0, 0);
-</script>
+<script src="scene.js"></script>
 
 </body>
 </html>
