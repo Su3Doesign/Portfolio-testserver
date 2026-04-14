@@ -162,7 +162,7 @@ function initThree(){
 initThree();
 
 /* ═══════════ KATANA LOAD ═══════════ */
-const loader = typeof THREE.GLTFLoader === 'function' ? new THREE.GLTFLoader() : (window.GLTFLoader ? new window.GLTFLoader() : null);
+const loader = (typeof THREE !== 'undefined' && typeof THREE.GLTFLoader === 'function') ? new THREE.GLTFLoader() : (window.GLTFLoader ? new window.GLTFLoader() : null);
 
 function createStandinKatana(){
   const blade = new THREE.Mesh(
