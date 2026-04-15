@@ -741,3 +741,84 @@ html,body{background:#000;color:var(--grey);font-family:var(--display);font-weig
   .cap-chapter{display:none;}
   .vault-grid{grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);}
 }
+/* ═══════════ NEW UPGRADES (GSAP, 2D SWAP, SNAKE TRAIL) ═══════════ */
+
+/* 3D to 2D Optimization Illusion Fallback Image */
+.katana-2d {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120vw; /* Adjust based on exact size match of your model */
+  z-index: 3; /* Just above Three canvas */
+  opacity: 0; 
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* Variable Font Waving Animation */
+.wave-text span {
+  display: inline-block;
+  transform-origin: bottom center;
+  transition: transform 0.1s ease;
+  /* GSAP will handle the animation in JS to make it fluid based on scroll/time */
+}
+
+/* Scroll Reveal Text Typography */
+.blur-reveal-text {
+  filter: blur(20px);
+  opacity: 0;
+  will-change: filter, opacity;
+}
+
+.color-shift-text {
+  color: var(--grey-dark);
+  will-change: color;
+}
+
+/* Interactive String Canvas */
+.string-container {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 200px;
+  z-index: 18;
+  pointer-events: auto; /* Allow mouse interaction */
+  opacity: 0; /* Managed by GSAP */
+  transform: translateY(20px);
+}
+#string-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Pixelated Snake Cursor Trail */
+#cursor-trail-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 8999; /* Just below main cursor */
+}
+
+.trail-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--beni);
+  pointer-events: none;
+  /* Crucial detail for the exact look you requested */
+  border-radius: 0; 
+  image-rendering: pixelated; 
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity;
+}
+
+/* Wobble/Glass Box Hover Effect */
+.wobble-hover {
+  transform-origin: center center;
+  /* GSAP dynamically applies matrix rotations on hover inside scene.js */
+}
