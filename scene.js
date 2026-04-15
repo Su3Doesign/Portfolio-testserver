@@ -20,7 +20,7 @@ vw:innerWidth, vh:innerHeight,
 dpr:Math.min(devicePixelRatio||1, 1.5),
 mx:innerWidth/2, my:innerHeight/2, nx:0, ny:0,
 t:0, lt:0, dt:0,
-fps:60, fpsT:0, fpsC:0, lowFpsCount:0, perfMode:‘high’,
+fps:60, fpsT:0, fpsC:0, lowFpsCount:0, perfMode:'high',
 modelReady:false, assetsReady:false, envReady:false,
 dialogueIdx:-1, mugenVisible:false,
 inkMode:false, inkScrollY:0,
@@ -31,36 +31,36 @@ bokeh:[], stars:[], petals:[], dandelions:[],
 
 /* ═══════════ DIALOGUE ═══════════ */
 const DIALOGUE = [
-{ at:0.07, who:‘SENSEI MUGEN’, text:’<em>Hmm.</em> So you finally crossed the line. Sit, traveler — the road is long, and the blade is older than your grandfather.’ },
-{ at:0.13, who:‘SENSEI MUGEN’, text:‘I am <strong>Mugen</strong>, ✦ keeper of unfinished worlds. This katana has cut the dreams of seventeen apprentices. Each returned home a craftsman.’ },
-{ at:0.20, who:‘SENSEI MUGEN’, text:‘But none — <em>none</em> — became a builder of worlds. Few inherit the will. Fewer still answer it.’ },
-{ at:0.27, who:‘SENSEI MUGEN’, text:‘Tell me, then. <strong>What world do you intend to build?</strong>’ },
-{ at:0.33, who:‘sumanth.D’, text:’<em>The one I cannot find on any map.</em>’ },
-{ at:0.41, who:‘SENSEI MUGEN’, text:‘Good. Then the blade goes with you. Through cloud. Through thunder. Through the breaking of this old world.’ },
-{ at:0.52, who:‘SENSEI MUGEN’, text:‘They will tell you the sky has an edge. They are wrong. <em>You were made to find out.</em>’ },
-{ at:0.66, who:‘SENSEI MUGEN’, text:‘Every crack you see was once the shape of somebody else's dream. Step over them. The self is a hill with a sea behind it.’ },
-{ at:0.78, who:‘SENSEI MUGEN’, text:‘These are your works. Not trophies — <em>evidence</em>. Proof the hand moves when the will points.’ },
-{ at:0.88, who:‘SENSEI MUGEN’, text:‘Now look up. The dawn does not arrive. It is <em>answered</em>.’ },
-{ at:0.96, who:‘SENSEI MUGEN’, text:‘Go on, builder. 世界を創る者. The world is waiting for yours.’ },
+{ at:0.07, who:'SENSEI MUGEN', text:'<em>Hmm.</em> So you finally crossed the line. Sit, traveler — the road is long, and the blade is older than your grandfather.' },
+{ at:0.13, who:'SENSEI MUGEN', text:'I am <strong>Mugen</strong>, ✦ keeper of unfinished worlds. This katana has cut the dreams of seventeen apprentices. Each returned home a craftsman.' },
+{ at:0.20, who:'SENSEI MUGEN', text:'But none — <em>none</em> — became a builder of worlds. Few inherit the will. Fewer still answer it.' },
+{ at:0.27, who:'SENSEI MUGEN', text:'Tell me, then. <strong>What world do you intend to build?</strong>' },
+{ at:0.33, who:'sumanth.D', text:'<em>The one I cannot find on any map.</em>' },
+{ at:0.41, who:'SENSEI MUGEN', text:'Good. Then the blade goes with you. Through cloud. Through thunder. Through the breaking of this old world.' },
+{ at:0.52, who:'SENSEI MUGEN', text:'They will tell you the sky has an edge. They are wrong. <em>You were made to find out.</em>' },
+{ at:0.66, who:'SENSEI MUGEN', text:'Every crack you see was once the shape of somebody else\'s dream. Step over them. The self is a hill with a sea behind it.' },
+{ at:0.78, who:'SENSEI MUGEN', text:'These are your works. Not trophies — <em>evidence</em>. Proof the hand moves when the will points.' },
+{ at:0.88, who:'SENSEI MUGEN', text:'Now look up. The dawn does not arrive. It is <em>answered</em>.' },
+{ at:0.96, who:'SENSEI MUGEN', text:'Go on, builder. 世界を創る者. The world is waiting for yours.' },
 ];
 
 /* ═══════════ WORKS (cappen ledger) ═══════════ */
 const WORKS = [
-{ no:‘01’, year:‘2025’, title:‘Fudō Myōō’,       role:‘Environment · Hard-Surface’, desc:‘A sanctum of still fire. Shingon iconography rendered as space.’ },
-{ no:‘02’, year:‘2025’, title:‘Midea · Canada’,  role:‘Graphic Design’,             desc:‘Five sub-brands. Toronto, March through July.’ },
-{ no:‘03’, year:‘2024’, title:‘Kōhaku’,          role:‘3D · Concept’,               desc:‘Silent koi. A study in subsurface and lanternlight.’ },
-{ no:‘04’, year:‘2024’, title:‘KD Displays’,     role:‘Retail Environments’,        desc:‘Environmental graphics for Home Depot Canada lines.’ },
-{ no:‘05’, year:‘2024’, title:‘Onibi’,           role:‘Hard-Surface’,               desc:‘Wandering-flame lanterns. Soft emissives, hand-tuned.’ },
-{ no:‘06’, year:‘2023’, title:‘Investohome’,     role:‘Brand · Identity’,           desc:‘Full identity system for a Toronto real-estate venture.’ },
-{ no:‘07’, year:‘2023’, title:‘The Iron Garden’, role:‘Environment · Coursework’,   desc:‘Rust and cherry branches. A study in rain memory.’ },
+{ no:'01', year:'2025', title:'Fudō Myōō',       role:'Environment · Hard-Surface', desc:'A sanctum of still fire. Shingon iconography rendered as space.' },
+{ no:'02', year:'2025', title:'Midea · Canada',  role:'Graphic Design',             desc:'Five sub-brands. Toronto, March through July.' },
+{ no:'03', year:'2024', title:'Kōhaku',          role:'3D · Concept',               desc:'Silent koi. A study in subsurface and lanternlight.' },
+{ no:'04', year:'2024', title:'KD Displays',     role:'Retail Environments',        desc:'Environmental graphics for Home Depot Canada lines.' },
+{ no:'05', year:'2024', title:'Onibi',           role:'Hard-Surface',               desc:'Wandering-flame lanterns. Soft emissives, hand-tuned.' },
+{ no:'06', year:'2023', title:'Investohome',     role:'Brand · Identity',           desc:'Full identity system for a Toronto real-estate venture.' },
+{ no:'07', year:'2023', title:'The Iron Garden', role:'Environment · Coursework',   desc:'Rust and cherry branches. A study in rain memory.' },
 ];
 
 /* ═══════════ HIDDEN VAULT (top picks revealed only on awakening) ═══════════ */
 const VAULT = [
-{ no:‘I’,   tag:‘CROWN JEWEL’,  title:‘Fudō Myōō’,     sub:‘Personal · 2025’ },
-{ no:‘II’,  tag:‘LIVING ROOM’,  title:‘Kōhaku’,        sub:‘Concept · 2024’ },
-{ no:‘III’, tag:‘INDUSTRY’,     title:‘Midea Canada’,  sub:‘Toronto · 2025’ },
-{ no:‘IV’,  tag:‘FIRST LIGHT’,  title:‘The Iron Garden’, sub:‘Coursework · 2023’ },
+{ no:'I',   tag:'CROWN JEWEL',  title:'Fudō Myōō',     sub:'Personal · 2025' },
+{ no:'II',  tag:'LIVING ROOM',  title:'Kōhaku',        sub:'Concept · 2024' },
+{ no:'III', tag:'INDUSTRY',     title:'Midea Canada',  sub:'Toronto · 2025' },
+{ no:'IV',  tag:'FIRST LIGHT',  title:'The Iron Garden', sub:'Coursework · 2023' },
 ];
 
 /* ═══════════ UTIL ═══════════ */
@@ -90,8 +90,8 @@ let scrollMax = 1;
 function updateScrollMax(){
 scrollMax = Math.max(1, document.documentElement.scrollHeight - innerHeight);
 }
-addEventListener(‘scroll’, () => { S.scrollY = scrollY; }, {passive:true});
-addEventListener(‘resize’, () => {
+addEventListener('scroll', () => { S.scrollY = scrollY; }, {passive:true});
+addEventListener('resize', () => {
 S.vw = innerWidth; S.vh = innerHeight;
 updateScrollMax();
 if(R){ R.setSize(S.vw, S.vh); CAM.aspect = S.vw/S.vh; CAM.updateProjectionMatrix(); }
@@ -100,10 +100,10 @@ buildCrackPaths(); // reflow cracks on resize
 });
 
 /* ═══════════ CANVASES ═══════════ */
-const stars = $(‘stars’), atmos = $(‘atmos’), inkAtmos = $(‘ink-atmos’);
-const sx = stars.getContext(‘2d’);
-const ax = atmos.getContext(‘2d’);
-const ix = inkAtmos.getContext(‘2d’);
+const stars = $('stars'), atmos = $('atmos'), inkAtmos = $('ink-atmos');
+const sx = stars.getContext('2d');
+const ax = atmos.getContext('2d');
+const ix = inkAtmos.getContext('2d');
 
 function resizeCanvases(){
 [[stars, sx], [atmos, ax], [inkAtmos, ix]].forEach(([c, ctx]) => {
@@ -120,7 +120,7 @@ let hemiL, keyL, fillL, rimL, edgeAccent, moonL, sunL, flashL;
 
 function initThree(){
 R = new THREE.WebGLRenderer({
-canvas:$(‘three’), antialias:true, alpha:true, powerPreference:‘high-performance’
+canvas:$('three'), antialias:true, alpha:true, powerPreference:'high-performance'
 });
 R.setPixelRatio(S.dpr);
 R.setSize(S.vw, S.vh);
@@ -135,20 +135,20 @@ CAM.position.set(0, 0, 5);
 
 /* RoomEnvironment for blade reflections */
 try {
-if(typeof THREE.RoomEnvironment === ‘function’ && typeof THREE.PMREMGenerator === ‘function’){
+if(typeof THREE.RoomEnvironment === 'function' && typeof THREE.PMREMGenerator === 'function'){
 const pmrem = new THREE.PMREMGenerator(R);
 pmrem.compileEquirectangularShader();
 envMap = pmrem.fromScene(new THREE.RoomEnvironment(), 0.04).texture;
 SC.environment = envMap;
 pmrem.dispose();
 S.envReady = true;
-console.log(‘✦ RoomEnvironment ready — blade will reflect properly’);
+console.log('✦ RoomEnvironment ready — blade will reflect properly');
 } else {
-console.warn(‘RoomEnvironment unavailable — blade reflections will be flat’);
+console.warn('RoomEnvironment unavailable — blade reflections will be flat');
 S.envReady = true; // continue regardless
 }
 } catch(e){
-console.warn(‘PMREM init failed:’, e);
+console.warn('PMREM init failed:', e);
 S.envReady = true;
 }
 
@@ -185,8 +185,8 @@ initThree();
 
 /* ═══════════ KATANA LOAD ═══════════ */
 function getGLTFLoader(){
-if(typeof THREE.GLTFLoader === ‘function’) return new THREE.GLTFLoader();
-if(typeof window.GLTFLoader === ‘function’) return new window.GLTFLoader();
+if(typeof THREE.GLTFLoader === 'function') return new THREE.GLTFLoader();
+if(typeof window.GLTFLoader === 'function') return new window.GLTFLoader();
 return null;
 }
 
@@ -215,7 +215,7 @@ KAT.add(model);
 KAT.userData.model = model;
 KAT.userData.meshes = meshes;
 S.modelReady = true;
-console.log(‘✦ Katana ready’);
+console.log('✦ Katana ready');
 checkBoot();
 }
 
@@ -232,13 +232,13 @@ return mat;
 
 const gltfLoader = getGLTFLoader();
 let gltfTimeout = setTimeout(() => {
-console.warn(‘GLTF load timeout — using stand-in’);
+console.warn('GLTF load timeout — using stand-in');
 const { group, meshes } = createStandinKatana();
 finalizeKatana(group, meshes);
 }, 15000);
 
 if(gltfLoader){
-gltfLoader.load(‘models/katana.glb’,
+gltfLoader.load('models/katana.glb',
 gltf => {
 clearTimeout(gltfTimeout);
 const m = gltf.scene;
@@ -249,7 +249,6 @@ m.scale.setScalar(scale);
 const ctr = box.getCenter(new THREE.Vector3());
 m.position.set(-ctr.x*scale, -ctr.y*scale, -ctr.z*scale);
 
-```
   const meshes = [];
   m.traverse(o => {
     if(!o.isMesh) return;
@@ -271,12 +270,10 @@ err => {
   const { group, meshes } = createStandinKatana();
   finalizeKatana(group, meshes);
 }
-```
-
 );
 } else {
 clearTimeout(gltfTimeout);
-console.warn(‘No GLTFLoader — stand-in katana’);
+console.warn('No GLTFLoader — stand-in katana');
 const { group, meshes } = createStandinKatana();
 finalizeKatana(group, meshes);
 }
@@ -334,7 +331,7 @@ rot:Math.random()*Math.PI*2,
 rotV:(Math.random()-.5)*0.015,
 vx:-0.2-Math.random()*0.4,
 vy:0.1+Math.random()*0.3,
-type:Math.random()<0.4 ? ‘leaf’ : (Math.random()<0.5 ? ‘petal’ : ‘star’),
+type:Math.random()<0.4 ? 'leaf' : (Math.random()<0.5 ? 'petal' : 'star'),
 op:0.4+Math.random()*0.4,
 });
 }
@@ -377,20 +374,18 @@ const py = st.y + S.ny * (4 + st.depth*8) - p * (st.depth*40);
 const wrappedY = ((py % H) + H) % H;
 const r = st.r * (0.5 + st.depth*0.8);
 
-```
-// glow halo
-const haloOp = base * w * 0.25 * st.depth;
-if(haloOp > 0.02){
-  const g = sx.createRadialGradient(px, wrappedY, 0, px, wrappedY, r*4);
-  g.addColorStop(0, `rgba(245,237,224,${haloOp})`);
-  g.addColorStop(1, 'rgba(245,237,224,0)');
-  sx.fillStyle = g;
-  sx.beginPath(); sx.arc(px, wrappedY, r*4, 0, Math.PI*2); sx.fill();
-}
-// core
-sx.fillStyle = `rgba(245,237,224,${base * w})`;
-sx.beginPath(); sx.arc(px, wrappedY, r, 0, Math.PI*2); sx.fill();
-```
+  // glow halo
+  const haloOp = base * w * 0.25 * st.depth;
+  if(haloOp > 0.02){
+    const g = sx.createRadialGradient(px, wrappedY, 0, px, wrappedY, r*4);
+    g.addColorStop(0, `rgba(245,237,224,${haloOp})`);
+    g.addColorStop(1, 'rgba(245,237,224,0)');
+    sx.fillStyle = g;
+    sx.beginPath(); sx.arc(px, wrappedY, r*4, 0, Math.PI*2); sx.fill();
+  }
+  // core
+  sx.fillStyle = `rgba(245,237,224,${base * w})`;
+  sx.beginPath(); sx.arc(px, wrappedY, r, 0, Math.PI*2); sx.fill();
 
 });
 }
@@ -405,24 +400,24 @@ const wPaper   = smoothstep(0.70, 0.78, p)  * (1 - smoothstep(0.83, 0.88, p));
 const wHilltop = smoothstep(0.82, 0.88, p)  * (1 - smoothstep(0.94, 0.97, p));
 const wDawn    = smoothstep(0.93, 0.97, p);
 
-setLayerOpacity($(‘bg-hero’),    wHero);
-setLayerOpacity($(‘bg-clouds’),  wClouds);
-setLayerOpacity($(‘bg-impact’),  wImpact);
-setLayerOpacity($(‘bg-paper’),   wPaper);
-setLayerOpacity($(‘bg-hilltop’), wHilltop);
-setLayerOpacity($(‘bg-dawn’),    wDawn);
+setLayerOpacity($('bg-hero'),    wHero);
+setLayerOpacity($('bg-clouds'),  wClouds);
+setLayerOpacity($('bg-impact'),  wImpact);
+setLayerOpacity($('bg-paper'),   wPaper);
+setLayerOpacity($('bg-hilltop'), wHilltop);
+setLayerOpacity($('bg-dawn'),    wDawn);
 
-setParallax($(‘bg-hero’),    p, 0.00, 0.38, 1.05, 1.12, S.nx*0.8, S.ny*0.6);
-setParallax($(‘bg-clouds’),  p, 0.36, 0.62, 1.02, 1.10, S.nx*1.2, S.ny*0.8);
-setParallax($(‘bg-paper’),   p, 0.68, 0.88, 1.00, 1.04, S.nx*0.3, S.ny*0.2);
-setParallax($(‘bg-hilltop’), p, 0.82, 0.97, 1.04, 1.12, S.nx*0.6, S.ny*0.4);
-setParallax($(‘bg-dawn’),    p, 0.93, 1.00, 1.02, 1.08, S.nx*0.4, S.ny*0.3);
+setParallax($('bg-hero'),    p, 0.00, 0.38, 1.05, 1.12, S.nx*0.8, S.ny*0.6);
+setParallax($('bg-clouds'),  p, 0.36, 0.62, 1.02, 1.10, S.nx*1.2, S.ny*0.8);
+setParallax($('bg-paper'),   p, 0.68, 0.88, 1.00, 1.04, S.nx*0.3, S.ny*0.2);
+setParallax($('bg-hilltop'), p, 0.82, 0.97, 1.04, 1.12, S.nx*0.6, S.ny*0.4);
+setParallax($('bg-dawn'),    p, 0.93, 1.00, 1.02, 1.08, S.nx*0.4, S.ny*0.3);
 }
 function setLayerOpacity(el, w){
 if(!el) return;
 const v = w > 0.01 ? Math.min(1, w) : 0;
 el.style.opacity = v;
-toggle(el, ‘-on’, v > 0.01);
+toggle(el, '-on', v > 0.01);
 }
 function setParallax(el, p, start, end, minS, maxS, mx, my){
 if(!el) return;
@@ -565,7 +560,6 @@ pe.y += pe.vy;
 pe.rot += pe.rv;
 if(pe.y > H+40 || pe.x < -60){ Object.assign(pe, spawnPetal(false)); }
 
-```
   ax.save();
   ax.translate(pe.x, pe.y);
   ax.rotate(pe.rot);
@@ -588,9 +582,8 @@ if(pe.y > H+40 || pe.x < -60){ Object.assign(pe, spawnPetal(false)); }
     drawPetalShape(ax, pe.sz);
   }
   ax.restore();
-});
-```
 
+});
 }
 
 // ─── BOKEH FIREFLIES (color shifts per beat) ───
@@ -600,7 +593,7 @@ else if(p > 0.82 && p < 0.94) bokehColor = [180, 210, 240]; // cool blue in moon
 else if(p > 0.94) bokehColor = [255, 200, 120];          // golden in dawn
 else if(p < 0.36) bokehColor = [220, 100, 80];           // red in tree
 
-if(bokehColor && S.perfMode === ‘high’){
+if(bokehColor && S.perfMode === 'high'){
 S.bokeh.forEach(b => {
 b.x += b.vx; b.y += b.vy;
 b.pulse += S.dt * b.pulseS;
@@ -608,7 +601,6 @@ if(b.y < -30) { b.y = H+30; b.x = Math.random()*W; }
 if(b.x < -30) b.x = W+30;
 if(b.x > W+30) b.x = -30;
 
-```
   const pulse = 0.5 + 0.5*Math.sin(b.pulse);
   const px = b.x + S.nx * (10 + b.depth*20);
   const py = b.y + S.ny * (6 + b.depth*12);
@@ -621,9 +613,8 @@ if(b.x > W+30) b.x = -30;
   g.addColorStop(1, `rgba(${bokehColor[0]},${bokehColor[1]},${bokehColor[2]},0)`);
   ax.fillStyle = g;
   ax.beginPath(); ax.arc(px, py, r, 0, Math.PI*2); ax.fill();
-});
-```
 
+});
 }
 
 // ─── LIGHTNING (beat 5) ───
@@ -646,7 +637,6 @@ d.rot += d.rotV;
 if(d.x > W+40) d.x = -40;
 if(d.y < -20) d.y = H+20;
 
-```
   ax.save();
   ax.translate(d.x, d.y);
   ax.rotate(d.rot);
@@ -671,9 +661,8 @@ if(d.y < -20) d.y = H+20;
     ax.fill();
   }
   ax.restore();
-});
-```
 
+});
 }
 }
 
@@ -691,8 +680,8 @@ branches:Math.floor(Math.random()*3)+1,
 });
 // fire screen flash
 S.flashIntensity = 1.0;
-toggle($(‘overlay-chromatic’), ‘-strong’, true);
-setTimeout(() => toggle($(‘overlay-chromatic’), ‘-strong’, false), 220);
+toggle($('overlay-chromatic'), '-strong', true);
+setTimeout(() => toggle($('overlay-chromatic'), '-strong', false), 220);
 }
 function lightningSegments(x1, y1, x2, y2, detail, seed){
 const segs = [[x1, y1]];
@@ -715,9 +704,8 @@ S.lightning.forEach(b => {
 b.life -= b.decay;
 const op = Math.max(0, b.life);
 const segs = lightningSegments(b.x1, b.y1, b.x2, b.y2, b.life, b.seed);
-ax.lineCap = ‘round’; ax.lineJoin = ‘round’;
+ax.lineCap = 'round'; ax.lineJoin = 'round';
 
-```
 // outer halo
 ax.strokeStyle = `rgba(180,140,255,${op*0.25})`; ax.lineWidth = 14;
 drawPath(ax, segs);
@@ -743,7 +731,6 @@ for(let k=0; k<b.branches; k++){
   ax.strokeStyle = `rgba(255,240,255,${op*0.8})`; ax.lineWidth = 1;
   drawPath(ax, bSegs);
 }
-```
 
 });
 }
@@ -759,9 +746,9 @@ let crackPaths = []; // SVG path strings
 function buildCrackPaths(){
 // 14 fracture lines radiating from center, each with branching sub-cracks
 const cx = 960, cy = 540;
-const svg = $(‘crack-svg’);
+const svg = $('crack-svg');
 // remove old paths (keep <defs>)
-svg.querySelectorAll(‘path’).forEach(p => p.remove());
+svg.querySelectorAll('path').forEach(p => p.remove());
 crackPaths = [];
 
 const N = 16;
@@ -769,7 +756,6 @@ for(let i=0; i<N; i++){
 const ang = (i/N) * Math.PI*2 + (Math.random()-0.5)*0.2;
 const len = 600 + Math.random()*700;
 
-```
 let d = `M ${cx} ${cy}`;
 let x = cx, y = cy;
 const steps = 6;
@@ -817,7 +803,6 @@ if(Math.random() > 0.4){
   bp.style.strokeDashoffset = bl;
   crackPaths.push({ path:bp, length:bl });
 }
-```
 
 }
 }
@@ -826,10 +811,10 @@ function updateCrack(){
 const p = S.progress;
 // crack progress: fades in 0.58 → reaches full at 0.74
 const cp = smoothstep(0.58, 0.74, p);
-const layer = $(‘glass-crack’);
-toggle(layer, ‘-on’, cp > 0.01);
-toggle(layer, ‘-cracking’, cp > 0.01);
-if(layer) layer.style.setProperty(’–crack-progress’, cp);
+const layer = $('glass-crack');
+toggle(layer, '-on', cp > 0.01);
+toggle(layer, '-cracking', cp > 0.01);
+if(layer) layer.style.setProperty('--crack-progress', cp);
 
 crackPaths.forEach(({path, length}, i) => {
 // staggered draw — each crack starts at a slightly different progress
@@ -842,15 +827,15 @@ path.style.strokeDashoffset = length * (1 - local);
 /* ═══════════ M-GLYPH MORPH ═══════════ */
 function updateMGlyph(){
 const cycle = (S.t % 12) / 12;
-let glyph = ‘m’, rot = 0;
-if(cycle < 0.30){ glyph = ‘m’; rot = cycle*8; }
-else if(cycle < 0.36){ glyph = ‘3’; rot = (cycle-0.30) * 4 * 180; }
-else if(cycle < 0.63){ glyph = ‘3’; rot = 90 + (cycle-0.36)*8; }
-else if(cycle < 0.70){ glyph = ‘D’; rot = 180 + (cycle-0.63) * 4 * 180; }
-else if(cycle < 0.94){ glyph = ‘D’; rot = 360 + (cycle-0.70)*8; }
-else { glyph = ‘m’; rot = 360 + (cycle-0.94) * 4 * 360; }
+let glyph = 'm', rot = 0;
+if(cycle < 0.30){ glyph = 'm'; rot = cycle*8; }
+else if(cycle < 0.36){ glyph = '3'; rot = (cycle-0.30) * 4 * 180; }
+else if(cycle < 0.63){ glyph = '3'; rot = 90 + (cycle-0.36)*8; }
+else if(cycle < 0.70){ glyph = 'D'; rot = 180 + (cycle-0.63) * 4 * 180; }
+else if(cycle < 0.94){ glyph = 'D'; rot = 360 + (cycle-0.70)*8; }
+else { glyph = 'm'; rot = 360 + (cycle-0.94) * 4 * 360; }
 
-[$(‘brand-m’), $(‘load-m’), $(‘hm-m’)].forEach(el => {
+[$('brand-m'), $('load-m'), $('hm-m')].forEach(el => {
 if(!el) return;
 if(el.textContent !== glyph) el.textContent = glyph;
 el.style.transform = `rotate(${rot.toFixed(1)}deg)`;
@@ -858,9 +843,9 @@ el.style.transform = `rotate(${rot.toFixed(1)}deg)`;
 }
 
 /* ═══════════ GLITCH SCRAMBLER ═══════════ */
-const KANA = ‘アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン’;
-const KANJI = ‘刀剣魂創造夢幻覚醒風炎月海’;
-const SYMBOLS = ‘▓▒░│┤┐└┴┬├─┼╪’;
+const KANA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+const KANJI = '刀剣魂創造夢幻覚醒風炎月海';
+const SYMBOLS = '▓▒░│┤┐└┴┬├─┼╪';
 function scrambleChar(){
 const src = Math.random() < 0.5 ? KANA : (Math.random() < 0.6 ? KANJI : SYMBOLS);
 return src[Math.floor(Math.random()*src.length)];
@@ -870,15 +855,15 @@ if(el._scrambling) return;
 const target = el.dataset.target;
 if(!target) return;
 el._scrambling = true;
-const lines = target.split(’|’);
-const plainLines = lines.map(l => l.replace(/<[^>]+>/g, ‘’));
+const lines = target.split('|');
+const plainLines = lines.map(l => l.replace(/<[^>]+>/g, ''));
 const steps = 14;
 let step = 0;
 const tick = () => {
 step++;
 const prog = step/steps;
 if(step >= steps){
-el.innerHTML = lines.join(’<br>’);
+el.innerHTML = lines.join('<br>');
 el._scrambling = false;
 return;
 }
@@ -890,7 +875,7 @@ let s = plain.slice(0, reveal);
 for(let i=0; i<scrLen; i++) s += scrambleChar();
 return s;
 });
-el.innerHTML = mixed.join(’<br>’);
+el.innerHTML = mixed.join('<br>');
 setTimeout(tick, 50);
 };
 tick();
@@ -903,17 +888,17 @@ if(idx === S.dialogueIdx) return;
 S.dialogueIdx = idx;
 const d = DIALOGUE[idx];
 if(!d) return;
-if(!S.mugenVisible){ $(‘mugen’).classList.add(’-on’); S.mugenVisible = true; }
-$(‘mb-who’).textContent = d.who;
+if(!S.mugenVisible){ $('mugen').classList.add('-on'); S.mugenVisible = true; }
+$('mb-who').textContent = d.who;
 if(typingJob) clearInterval(typingJob);
 const target = d.text;
 let i = 0;
-$(‘mb-text’).innerHTML = ‘’;
+$('mb-text').innerHTML = '';
 typingJob = setInterval(() => {
 i++;
 let preview = target.slice(0, i);
-const open = […preview.matchAll(/<(\w+)[^>]*>/g)].map(m => m[1]);
-const close = […preview.matchAll(/</(\w+)>/g)].map(m => m[1]);
+const open = [...preview.matchAll(/<(\w+)[^>]*>/g)].map(m => m[1]);
+const close = [...preview.matchAll(/<\/\w+>/g)].map(m => m[1]); // Note: fixed the close regex properly for standard quotes
 const unclosed = open.filter(t => {
 const oi = open.indexOf(t);
 const ci = close.indexOf(t);
@@ -921,7 +906,7 @@ return oi !== -1 && (ci === -1 || ci < oi);
 });
 let display = preview;
 unclosed.forEach(t => display += `</${t}>`);
-$(‘mb-text’).innerHTML = display;
+$('mb-text').innerHTML = display;
 if(i >= target.length){ clearInterval(typingJob); typingJob = null; }
 }, 22);
 }
@@ -931,98 +916,98 @@ function updateBeats(){
 const p = S.progress;
 const b = currentBeat(p);
 
-toggle($(‘hero-monogram’), ‘-on’, b === 1);
-toggle($(‘cap-chapter’), ‘-on’, b <= 2);
-toggle($(‘cap-bottom’),  ‘-on’, b === 2 || b === 3);
-toggle($(‘cap-folio’),   ‘-on’, b === 4 || b === 5);
+toggle($('hero-monogram'), '-on', b === 1);
+toggle($('cap-chapter'), '-on', b <= 2);
+toggle($('cap-bottom'),  '-on', b === 2 || b === 3);
+toggle($('cap-folio'),   '-on', b === 4 || b === 5);
 
-applyBeatTitle(‘bt-sacred’,   p > 0.10 && p < 0.24);
-applyBeatTitle(‘bt-dialogue’, p > 0.28 && p < 0.40);
-applyBeatTitle(‘bt-ascent’,   p > 0.44 && p < 0.58);
-applyBeatTitle(‘bt-self’,     p > 0.70 && p < 0.78);
+applyBeatTitle('bt-sacred',   p > 0.10 && p < 0.24);
+applyBeatTitle('bt-dialogue', p > 0.28 && p < 0.40);
+applyBeatTitle('bt-ascent',   p > 0.44 && p < 0.58);
+applyBeatTitle('bt-self',     p > 0.70 && p < 0.78);
 
-toggle($(‘scroll-hint’), ‘-on’, p < 0.04);
-toggle($(‘skillhub’), ‘-on’, b === 7);
-$(‘skillhub’).setAttribute(‘aria-hidden’, b === 7 ? ‘false’ : ‘true’);
-toggle($(‘dawn-title’), ‘-on’, p > 0.93);
-toggle($(‘jumper’), ‘-on’, p > 0.94);
+toggle($('scroll-hint'), '-on', p < 0.04);
+toggle($('skillhub'), '-on', b === 7);
+$('skillhub').setAttribute('aria-hidden', b === 7 ? 'false' : 'true');
+toggle($('dawn-title'), '-on', p > 0.93);
+toggle($('jumper'), '-on', p > 0.94);
 
 // Sun position adjusts based on which scene Luffy appears in
-const jumper = $(‘jumper’);
+const jumper = $('jumper');
 if(p > 0.94){
 // bg-dawn: sun is roughly center-50% horizontally, 48% vertically
-jumper.style.setProperty(’–sun-x’, ‘50%’);
-jumper.style.setProperty(’–sun-y’, ‘48%’);
+jumper.style.setProperty('--sun-x', '50%');
+jumper.style.setProperty('--sun-y', '48%');
 } else if(p > 0.85){
 // bg-hilltop: moon at ~38% x, 18% y
-jumper.style.setProperty(’–sun-x’, ‘38%’);
-jumper.style.setProperty(’–sun-y’, ‘24%’);
+jumper.style.setProperty('--sun-x', '38%');
+jumper.style.setProperty('--sun-y', '24%');
 }
 
 for(let i = 0; i < DIALOGUE.length; i++){
 if(p >= DIALOGUE[i].at && i > S.dialogueIdx){ showDialogue(i); break; }
 }
 if(p < DIALOGUE[0].at && S.mugenVisible){
-$(‘mugen’).classList.remove(’-on’);
+$('mugen').classList.remove('-on');
 S.mugenVisible = false;
 S.dialogueIdx = -1;
 }
 
-$(‘scroll-pct’).textContent = Math.round(p*100) + ‘%’;
-$(‘progress’).style.width = (p*100) + ‘%’;
-$(‘stat-run’).textContent = Math.round(p*100);
-const sectionNames = [’’, ‘Codex’, ‘Sacred Tree’, ‘Dialogue’, ‘Ascent’, ‘Thunder’, ‘Impact’, ‘Skill Hub’, ‘Moonlit’, ‘Dawn’];
-$(‘ch-label’).textContent = sectionNames[b] || ‘Codex’;
-$(‘ch-num’).textContent = String(b).padStart(2, ‘0’);
-$(‘stat-mode’).textContent = (sectionNames[b] || ‘Codex’).toUpperCase();
+$('scroll-pct').textContent = Math.round(p*100) + '%';
+$('progress').style.width = (p*100) + '%';
+$('stat-run').textContent = Math.round(p*100);
+const sectionNames = ['', 'Codex', 'Sacred Tree', 'Dialogue', 'Ascent', 'Thunder', 'Impact', 'Skill Hub', 'Moonlit', 'Dawn'];
+$('ch-label').textContent = sectionNames[b] || 'Codex';
+$('ch-num').textContent = String(b).padStart(2, '0');
+$('stat-mode').textContent = (sectionNames[b] || 'Codex').toUpperCase();
 
-toggle($(‘meta-widget’), ‘-on’, p > 0.08 && p < 0.96);
-$(‘mw-hour’).textContent = [’’, ‘Nightfall’, ‘Dusk’, ‘Witching’, ‘Witching’, ‘The Break’, ‘Silence’, ‘Paper Hour’, ‘Blue Hour’, ‘Daybreak’][b] || ‘’;
-$(‘mw-wind’).textContent = (b >= 4 && b <= 5) ? ‘SW · GALE’ : (b === 8) ? ‘NE · SEA’ : ‘NE · LOW’;
+toggle($('meta-widget'), '-on', p > 0.08 && p < 0.96);
+$('mw-hour').textContent = ['', 'Nightfall', 'Dusk', 'Witching', 'Witching', 'The Break', 'Silence', 'Paper Hour', 'Blue Hour', 'Daybreak'][b] || '';
+$('mw-wind').textContent = (b >= 4 && b <= 5) ? 'SW · GALE' : (b === 8) ? 'NE · SEA' : 'NE · LOW';
 }
 
 function applyBeatTitle(id, on){
 const el = $(id);
 if(!el) return;
 if(on){
-if(!el.classList.contains(’-on’)){
-el.classList.add(’-on’);
+if(!el.classList.contains('-on')){
+el.classList.add('-on');
 runScramble(el);
 }
 } else {
-el.classList.remove(’-on’);
+el.classList.remove('-on');
 }
 }
 
 /* ═══════════ POPULATE ═══════════ */
 function buildSkillHub(){
-$(‘skillhub-right’).innerHTML = WORKS.map(w => `<div class="sh-row" data-cursor="hover"> <div class="sh-num">N° ${w.no}</div> <div class="sh-title-row">${w.title}</div> <div class="sh-role">${w.role}</div> <div class="sh-year">${w.year}</div> <div class="sh-desc">${w.desc}</div> </div>`).join(’’);
+$('skillhub-right').innerHTML = WORKS.map(w => `<div class="sh-row" data-cursor="hover"> <div class="sh-num">N° ${w.no}</div> <div class="sh-title-row">${w.title}</div> <div class="sh-role">${w.role}</div> <div class="sh-year">${w.year}</div> <div class="sh-desc">${w.desc}</div> </div>`).join('');
 }
 function buildVault(){
-$(‘vault-grid’).innerHTML = VAULT.map(v => `<div class="vault-card" data-cursor="hover"> <div class="vc-no">N° ${v.no}</div> <div class="vc-tag">${v.tag}</div> <div class="vc-title">${v.title}</div> <div class="vc-sub">${v.sub}</div> </div>`).join(’’);
+$('vault-grid').innerHTML = VAULT.map(v => `<div class="vault-card" data-cursor="hover"> <div class="vc-no">N° ${v.no}</div> <div class="vc-tag">${v.tag}</div> <div class="vc-title">${v.title}</div> <div class="vc-sub">${v.sub}</div> </div>`).join('');
 }
 buildSkillHub();
 buildVault();
 
 /* ═══════════ CHAPTER JUMP ═══════════ */
-$(‘ch-expand’).addEventListener(‘click’, e => {
-const item = e.target.closest(’[data-jump]’);
+$('ch-expand').addEventListener('click', e => {
+const item = e.target.closest('[data-jump]');
 if(!item) return;
 const pct = parseFloat(item.dataset.jump);
 if(!isNaN(pct)){
 updateScrollMax();
-scrollTo({ top: scrollMax * pct, behavior:‘smooth’ });
+scrollTo({ top: scrollMax * pct, behavior:'smooth' });
 }
 });
 
 /* ═══════════ INK MODE ═══════════ */
-$(‘jumper’).addEventListener(‘click’, toggleInkMode);
+$('jumper').addEventListener('click', toggleInkMode);
 
 function toggleInkMode(){
 S.inkMode = !S.inkMode;
-$(‘stage’).classList.toggle(’-ink’, S.inkMode);
-$(‘ink-system’).classList.toggle(’-on’, S.inkMode);
-$(‘ink-system’).setAttribute(‘aria-hidden’, S.inkMode ? ‘false’ : ‘true’);
+$('stage').classList.toggle('-ink', S.inkMode);
+$('ink-system').classList.toggle('-on', S.inkMode);
+$('ink-system').setAttribute('aria-hidden', S.inkMode ? 'false' : 'true');
 
 if(S.inkMode){
 S.inkScrollY = scrollY;
@@ -1056,13 +1041,13 @@ if(c.x > innerWidth + c.r) c.life -= 0.012;
 const g = ix.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
 g.addColorStop(0, `rgba(10,9,6,${0.42*c.life})`);
 g.addColorStop(0.5, `rgba(15,12,8,${0.32*c.life})`);
-g.addColorStop(1, ‘rgba(0,0,0,0)’);
+g.addColorStop(1, 'rgba(0,0,0,0)');
 ix.fillStyle = g;
 ix.beginPath(); ix.arc(c.x, c.y, c.r, 0, Math.PI*2); ix.fill();
 });
 
 // flowing ink lines
-ix.strokeStyle = ‘rgba(10,9,6,.18)’;
+ix.strokeStyle = 'rgba(10,9,6,.18)';
 ix.lineWidth = 1.2;
 for(let i=0; i<6; i++){
 const y = innerHeight*(0.15 + i*0.13);
@@ -1082,7 +1067,6 @@ ip.rot += ip.rotV;
 if(ip.x < -30) ip.x = innerWidth+30;
 if(ip.y > innerHeight+30){ ip.y = -30; ip.x = Math.random()*innerWidth; }
 
-```
 ix.save();
 ix.translate(ip.x, ip.y);
 ix.rotate(ip.rot);
@@ -1115,28 +1099,27 @@ if(ip.type === 'leaf'){
   ix.fill();
 }
 ix.restore();
-```
 
 });
 }
 
 /* ═══════════ CURSOR ═══════════ */
-const cursor = $(‘cursor’);
-addEventListener(‘mousemove’, e => {
+const cursor = $('cursor');
+addEventListener('mousemove', e => {
 S.mx = e.clientX; S.my = e.clientY;
 S.nx = (e.clientX/innerWidth)*2 - 1;
 S.ny = -((e.clientY/innerHeight)*2 - 1);
-cursor.style.left = e.clientX + ‘px’;
-cursor.style.top  = e.clientY + ‘px’;
+cursor.style.left = e.clientX + 'px';
+cursor.style.top  = e.clientY + 'px';
 });
-document.addEventListener(‘mouseover’, e => {
-if(e.target.closest(’[data-cursor=“hover”], button, .sh-row, .ch-item, .chapter-pill, .vault-card’)){
-cursor.classList.add(’-hover’);
+document.addEventListener('mouseover', e => {
+if(e.target.closest('[data-cursor="hover"], button, .sh-row, .ch-item, .chapter-pill, .vault-card')){
+cursor.classList.add('-hover');
 }
 });
-document.addEventListener(‘mouseout’, e => {
-if(e.target.closest(’[data-cursor=“hover”], button, .sh-row, .ch-item, .chapter-pill, .vault-card’)){
-cursor.classList.remove(’-hover’);
+document.addEventListener('mouseout', e => {
+if(e.target.closest('[data-cursor="hover"], button, .sh-row, .ch-item, .chapter-pill, .vault-card')){
+cursor.classList.remove('-hover');
 }
 });
 
@@ -1144,10 +1127,10 @@ cursor.classList.remove(’-hover’);
 function checkPerf(){
 if(S.fps < 50){
 S.lowFpsCount++;
-if(S.lowFpsCount > 3 && S.perfMode === ‘high’){
-S.perfMode = ‘low’;
-console.log(‘▼ Switching to low-perf mode’);
-$(‘overlay-grain’).style.display = ‘none’;
+if(S.lowFpsCount > 3 && S.perfMode === 'high'){
+S.perfMode = 'low';
+console.log('▼ Switching to low-perf mode');
+$('overlay-grain').style.display = 'none';
 S.dpr = 1;
 resizeCanvases();
 if(R) R.setPixelRatio(1);
@@ -1167,7 +1150,7 @@ S.t += S.dt;
 S.fpsC++; S.fpsT += S.dt;
 if(S.fpsT >= 1){
 S.fps = Math.round(S.fpsC/S.fpsT);
-$(‘stat-fps’).textContent = S.fps;
+$('stat-fps').textContent = S.fps;
 S.fpsT = 0; S.fpsC = 0;
 checkPerf();
 }
@@ -1197,14 +1180,14 @@ S.lastSmooth = S.smooth;
 }
 
 /* ═══════════ BOOT ═══════════ */
-const ldText = $(‘loader-text’);
-const ldBar = $(‘loader-bar’);
-const ldPct = $(‘loader-pct’);
-const STAGES = [‘Forging · 鍛造’, ‘Tempering · 焼入’, ‘Polishing · 研磨’, ‘Awakening · 覚醒’];
+const ldText = $('loader-text');
+const ldBar = $('loader-bar');
+const ldPct = $('loader-pct');
+const STAGES = ['Forging · 鍛造', 'Tempering · 焼入', 'Polishing · 研磨', 'Awakening · 覚醒'];
 
 function updateLoaderBar(pct){
-ldBar.style.width = pct + ‘%’;
-ldPct.textContent = String(Math.round(pct)).padStart(3, ‘0’) + ’ %’;
+ldBar.style.width = pct + '%';
+ldPct.textContent = String(Math.round(pct)).padStart(3, '0') + ' %';
 }
 
 let ldP = 0, ldStage = 0;
@@ -1219,8 +1202,8 @@ if(ldP >= 30) clearInterval(ldInt);
 }, 100);
 
 // show skip button after 8 seconds
-setTimeout(() => $(‘loader-skip’).classList.add(’-show’), 8000);
-$(‘loader-skip’).addEventListener(‘click’, () => {
+setTimeout(() => $('loader-skip').classList.add('-show'), 8000);
+$('loader-skip').addEventListener('click', () => {
 S.modelReady = true;
 S.assetsReady = true;
 checkBoot();
@@ -1240,12 +1223,12 @@ initParticles();
 buildCrackPaths();
 
 setTimeout(() => {
-$(‘loader’).classList.add(’-out’);
+$('loader').classList.add('-out');
 S.lt = performance.now();
 updateScrollMax();
 scrollTo(0, 0);
 requestAnimationFrame(loop);
-setTimeout(() => $(‘loader’).remove(), 2000);
+setTimeout(() => $('loader').remove(), 2000);
 }, 700);
 }
 
@@ -1258,24 +1241,24 @@ img.src = u;
 })));
 }
 preloadImages([
-‘assets/bg-hero.png’,
-‘assets/bg-clouds.png’,
-‘assets/bg-hilltop.png’,
-‘assets/bg-dawn.png’,
-‘assets/sensei-mugen.png’,
-‘assets/jumper-silhouette.png’,
-‘assets/texture-paper.jpg’,
+'assets/bg-hero.png',
+'assets/bg-clouds.png',
+'assets/bg-hilltop.png',
+'assets/bg-dawn.png',
+'assets/sensei-mugen.png',
+'assets/jumper-silhouette.png',
+'assets/texture-paper.jpg',
 ]).then(() => {
 S.assetsReady = true;
-console.log(‘✦ All images loaded’);
+console.log('✦ All images loaded');
 updateLoaderBar(45);
 checkBoot();
 });
 
 // failsafe
 setTimeout(() => {
-if(!S.modelReady){ console.warn(‘Model failsafe triggered’); S.modelReady = true; }
-if(!S.assetsReady){ console.warn(‘Assets failsafe triggered’); S.assetsReady = true; }
+if(!S.modelReady){ console.warn('Model failsafe triggered'); S.modelReady = true; }
+if(!S.assetsReady){ console.warn('Assets failsafe triggered'); S.assetsReady = true; }
 checkBoot();
 }, 20000);
 
