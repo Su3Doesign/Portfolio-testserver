@@ -7,9 +7,7 @@
 <title>sumanth.D© — 世界を創る者</title>
 <meta name="description" content="Sumanth Amidyala — 3D environment designer, hard-surface modeller, builder of worlds.">
 
-<!-- Joy Boy was here. -->
-
-<!-- Preload critical assets so the loader stays in control -->
+<!-- Joy Boy was here. The dawn is a question. The sword is the answer. -->
 
 <link rel="preload" as="image" href="assets/bg-hero.png">
 <link rel="preload" as="image" href="assets/bg-clouds.png">
@@ -37,6 +35,7 @@
     <div class="loader-text" id="loader-text">Forging · 鍛造</div>
     <div class="loader-meta-l">∞ ALL BLUE / TRANSMISSION : 01</div>
     <div class="loader-meta-r" id="loader-pct">000 %</div>
+    <button class="loader-skip" id="loader-skip" aria-label="Skip">SKIP →</button>
   </div>
 </div>
 
@@ -44,37 +43,63 @@
 
 <div class="stage" id="stage">
 
-  <!-- Background image layers (GPU-accelerated via CSS transform) -->
+  <!-- BG image layers -->
 
   <div class="bg-scene" id="bg-scene">
     <img class="bg-img bg-1" id="bg-hero"    src="assets/bg-hero.png"    alt="" decoding="async">
     <img class="bg-img bg-2" id="bg-clouds"  src="assets/bg-clouds.png"  alt="" decoding="async">
-    <img class="bg-img bg-3" id="bg-impact"  alt="" aria-hidden="true">
+    <div class="bg-img bg-3" id="bg-impact"  aria-hidden="true"></div>
     <img class="bg-img bg-4" id="bg-paper"   src="assets/texture-paper.jpg" alt="" decoding="async">
     <img class="bg-img bg-5" id="bg-hilltop" src="assets/bg-hilltop.png" alt="" decoding="async">
     <img class="bg-img bg-6" id="bg-dawn"    src="assets/bg-dawn.png"    alt="" decoding="async">
   </div>
 
-  <!-- Three.js (katana only) -->
+  <!-- Parallax star layers (3 depths) -->
+
+<canvas class="layer layer-stars" id="stars"></canvas>
+
+  <!-- Three.js katana -->
 
 <canvas class="layer layer-three" id="three"></canvas>
 
-  <!-- Single atmosphere canvas — god rays, petals, embers, lightning, dandelions -->
+  <!-- Atmosphere — bokeh, petals, embers, lightning, dandelions -->
 
 <canvas class="layer layer-atmos" id="atmos"></canvas>
 
-  <!-- Shatter overlay (beat 6) -->
+  <!-- ═══════════ GLASS CRACK SYSTEM ═══════════ -->
 
-  <div class="shatter-layer" id="shatter" aria-hidden="true"></div>
+  <div class="glass-crack" id="glass-crack" aria-hidden="true">
+    <!-- frosted overlay -->
+    <div class="glass-frost" id="glass-frost"></div>
 
-  <!-- Progress thread -->
+```
+<!-- engraved text behind the glass -->
+<div class="glass-engrave">
+  <div class="ge-jp">刀は問い、答えは持ち手にある</div>
+  <div class="ge-en">The sword is the question — the answer lies in the wielder.</div>
+</div>
+
+<!-- SVG crack lines, drawn via stroke-dashoffset -->
+<svg class="crack-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" id="crack-svg">
+  <defs>
+    <filter id="crack-glow">
+      <feGaussianBlur stdDeviation="1.5"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+</svg>
+```
+
+  </div>
+
+  <!-- progress thread -->
 
   <div class="progress-line" id="progress" aria-hidden="true"></div>
 
-  <!-- Chromatic / grain / scanlines / vignette -->
+  <!-- overlays -->
 
-  <div class="overlay-chromatic" aria-hidden="true"></div>
-  <div class="overlay-grain" aria-hidden="true"></div>
+  <div class="overlay-chromatic" id="overlay-chromatic" aria-hidden="true"></div>
+  <div class="overlay-grain" id="overlay-grain" aria-hidden="true"></div>
   <div class="overlay-scanlines" aria-hidden="true"></div>
   <div class="overlay-vignette" aria-hidden="true"></div>
 
@@ -94,15 +119,15 @@
 
 ```
 <nav class="chapters" id="chapters" data-cursor="hover">
-  <div class="chapter-pill -num" id="ch-num">1</div>
+  <div class="chapter-pill -num" id="ch-num">01</div>
   <div class="chapter-pill -active" id="ch-main">
     <span class="ch-label" id="ch-label">Codex</span>
     <div class="ch-expand" id="ch-expand">
-      <div class="ch-item" data-jump="0.08">II · Sacred Tree</div>
-      <div class="ch-item" data-jump="0.38">III · Ascent</div>
-      <div class="ch-item" data-jump="0.72">IV · Skill Hub</div>
-      <div class="ch-item" data-jump="0.85">V · Moonlit Hill</div>
-      <div class="ch-item" data-jump="0.96">VI · Dawn</div>
+      <div class="ch-item" data-jump="0.10">II · Sacred Tree</div>
+      <div class="ch-item" data-jump="0.40">III · Ascent</div>
+      <div class="ch-item" data-jump="0.74">IV · Skill Hub</div>
+      <div class="ch-item" data-jump="0.86">V · Moonlit Hill</div>
+      <div class="ch-item" data-jump="0.97">VI · Dawn</div>
     </div>
   </div>
 </nav>
@@ -114,56 +139,58 @@
 
   <div class="stats">
     <span>← FPS : <span id="stat-fps">60</span></span>
-    <span>TOP : <span id="stat-top">0</span> PX</span>
     <span>RUNWAY : <span id="stat-run">0</span> %</span>
+    <span>MODE : <span id="stat-mode">CODEX</span></span>
   </div>
 
-  <!-- ═══════════ BEAT 1 — VOID (huge monogram center) ═══════════ -->
+  <!-- BEAT 1 — VOID monogram -->
 
   <div class="hero-monogram" id="hero-monogram">
     <span>su</span><span class="hm-m" id="hm-m">m</span><span class="hm-d">.D</span>
     <span class="hm-copy">©</span>
   </div>
 
-  <!-- ═══════════ CAPTIONS ═══════════ -->
+  <!-- captions -->
 
   <div class="caption cap-chapter" id="cap-chapter">CHAPTER 一 · INHERITANCE</div>
   <div class="caption cap-bottom"  id="cap-bottom">— FROM HYDERABAD, A CRAFTSMAN —</div>
   <div class="caption cap-folio"   id="cap-folio">VOL. 4.6 / FOLIO 001</div>
 
-  <!-- ═══════════ BEAT TITLES (glitch-scramble) ═══════════ -->
+  <!-- beat titles, with frosted glass backing -->
 
-  <div class="beat-title bt-sacred"  id="bt-sacred"
+  <div class="beat-title bt-sacred" id="bt-sacred"
        data-target="A blade is just steel,|until &lt;em&gt;someone&lt;/em&gt; chooses to lift it."></div>
 
   <div class="beat-title bt-dialogue" id="bt-dialogue"
        data-target="&lt;span class='quiet'&gt;&#8220;And so —&#8221;&lt;/span&gt;|&lt;span class='accent'&gt;the world I wanted&lt;/span&gt;|&lt;span class='quiet'&gt;was the one I had to build.&#8221;&lt;/span&gt;"></div>
 
-  <div class="beat-title bt-ascent"  id="bt-ascent"
+  <div class="beat-title bt-ascent" id="bt-ascent"
        data-target="Between &lt;em&gt;clouds&lt;/em&gt; and &lt;em&gt;thunder&lt;/em&gt;,|a blade remembers its weight."></div>
 
-  <div class="beat-title bt-self"    id="bt-self"
+  <div class="beat-title bt-self" id="bt-self"
        data-target="&#8220;To master the craft is to master &lt;em&gt;the self&lt;/em&gt;.&#8221;"></div>
 
-  <!-- ═══════════ BEAT 7 — SKILL HUB (editorial ledger) ═══════════ -->
+  <!-- Skill Hub (cappen ledger) -->
 
   <section class="skillhub" id="skillhub" aria-hidden="true">
     <div class="skillhub-left">
       <div class="sh-kicker">WORKS &middot; 作品</div>
       <h2 class="sh-title">The worlds<br>I have begun<br><em>to build.</em></h2>
       <p class="sh-sub">Environment design, hard-surface modelling, and the objects that inhabit imagined spaces. Seven pieces across three continents — 2023 to the present.</p>
-      <div class="sh-footnote">Scroll to traverse · 続く</div>
+      <div class="sh-footnote">↓ continue · 続く</div>
     </div>
     <div class="skillhub-right" id="skillhub-right"></div>
   </section>
 
-  <!-- ═══════════ BEAT 9 — DAWN + JUMPER ═══════════ -->
+  <!-- Dawn title -->
 
   <div class="dawn-title" id="dawn-title">
     <div class="dt-kicker">報い · The Dawn</div>
     <div class="dt-main">is a <em>question</em>.</div>
     <div class="dt-main">The sword is the <span class="red">answer</span>.</div>
   </div>
+
+  <!-- Luffy — sun-aligned via CSS variables -->
 
   <button class="jumper" id="jumper" aria-label="Awaken">
     <img src="assets/jumper-silhouette.png" alt="" decoding="async">
@@ -172,7 +199,7 @@
 
   <div class="scroll-hint" id="scroll-hint">Scroll · 続く</div>
 
-  <!-- ═══════════ MUGEN (narrator portrait + bubble) ═══════════ -->
+  <!-- Mugen narrator -->
 
   <div class="mugen" id="mugen">
     <div class="mugen-bubble" id="mugen-bubble">
@@ -185,7 +212,7 @@
     </div>
   </div>
 
-  <!-- ═══════════ META WIDGET ═══════════ -->
+  <!-- meta widget -->
 
   <aside class="meta-widget" id="meta-widget">
     <div class="mw-row"><span class="mw-k">HOUR</span><span class="mw-v" id="mw-hour">Nightfall</span></div>
@@ -193,14 +220,28 @@
     <div class="mw-row"><span class="mw-k">WIND</span><span class="mw-v" id="mw-wind">NE · LOW</span></div>
   </aside>
 
-  <!-- ═══════════ INK MODE (Luffy click) ═══════════ -->
+  <!-- ═══════════ INK MODE — HIDDEN VAULT ═══════════ -->
 
-<canvas class="ink-layer" id="ink-layer" aria-hidden="true"></canvas>
+  <div class="ink-system" id="ink-system" aria-hidden="true">
+    <canvas class="ink-atmos" id="ink-atmos"></canvas>
 
-  <div class="ink-title" id="ink-title">
-    <div class="it-kanji">覚醒</div>
-    <div class="it-en">AWAKENING</div>
-    <div class="it-sub">Every ocean has a shore.<br>Every shore has a sky.<br><em>Keep going.</em></div>
+```
+<div class="ink-header">
+  <div class="ih-kanji">覚醒</div>
+  <div class="ih-en">THE HIDDEN TREASURES</div>
+  <div class="ih-sub">For those who answer the call.</div>
+</div>
+
+<div class="vault-grid" id="vault-grid">
+  <!-- populated by JS — 4 hero spots -->
+</div>
+
+<div class="ink-footer">
+  <span>↓ scroll the awakening · 覚醒を巡る</span>
+  <span>click the wanderer to return</span>
+</div>
+```
+
   </div>
 
 </div>
@@ -208,11 +249,11 @@
 <div class="scroll-spacer"></div>
 <div class="cursor" id="cursor"><div class="cursor-dot"></div></div>
 
-<!-- three.js + gltf -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
 
 <script src="scene.js"></script>
 
