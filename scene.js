@@ -284,6 +284,7 @@ function initParticles(){
     });
   }
 }
+
 function spawnPetal(distribute){
   var close = Math.random() < 0.07;
   return {
@@ -299,6 +300,7 @@ function spawnPetal(distribute){
     glass:close,
   };
 }
+
 
 /* ============== STARS ============== */
 function drawStars(){
