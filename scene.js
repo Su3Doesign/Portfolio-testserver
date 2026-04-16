@@ -288,14 +288,14 @@ function spawnPetal(distribute){
   var close = Math.random() < 0.07;
   return {
     x:Math.random()*innerWidth+120,
-    y:distribute?Math.random()*innerHeight:-30-Math.random()*80,
-    sz:close?16+Math.random()*16:3+Math.random()*5,
-    rot:Math.random()*Math.PI*2, rv:(Math.random()-.5)*.018,
-    vx:-.3-Math.random()*.7-(close?.3:0),
-    vy:.15+Math.random()*.4+(close?.3:0),
-    sw:Math.random()*Math.PI*2, ss:.005+Math.random()*.012,
-    sa:.3+Math.random()*1.0,
-    op:close?.3+Math.random()*.25:.35+Math.random()*.5,
+    y:distribute ? Math.random()*innerHeight : -30-Math.random()*80,
+    sz:close ? 16+Math.random()*16 : 3+Math.random()*5,
+    rot:Math.random()*Math.PI*2, rv:(Math.random()-0.5)*0.018,
+    vx:-0.3-Math.random()*0.7-(close ? 0.3 : 0),
+    vy:0.15+Math.random()*0.4+(close ? 0.3 : 0),
+    sw:Math.random()*Math.PI*2, ss:0.005+Math.random()*0.012,
+    sa:0.3+Math.random()*1.0,
+    op:close ? 0.3+Math.random()*0.25 : 0.35+Math.random()*0.5,
     glass:close,
   };
 }
